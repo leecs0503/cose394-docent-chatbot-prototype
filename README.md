@@ -4,6 +4,8 @@ COSE394 창의적소프트웨어창업방법론 수업 도슨트 프로젝트 �
 ## Dependency
 node=^18.18.0
 
-## install
+## Install
 npm install
 
+## Architecture
+![architecture](./resource/architecture.drawio.png)
