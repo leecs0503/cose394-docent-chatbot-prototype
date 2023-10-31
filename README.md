@@ -1,2 +1,4 @@
 # cose394-docent-chatbot-prototype
-docent
+
+eslint로 linting
+jest로 테스트
