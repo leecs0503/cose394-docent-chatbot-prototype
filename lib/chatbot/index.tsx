@@ -1,3 +1,5 @@
+import 'server-only'
+
 import {ChatBot} from "./chatBot"
 import { StreamOpenAIModel } from "./model/openAiModel" 
 import {OPENAI_API_KEY, OPENAI_MODEL_VERSION} from "../constants"
