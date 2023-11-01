@@ -17,7 +17,10 @@ export class ChatBot {
     }
   }
   
-  private buildScript(ctx: ChatBotContext, message: string): QueryRow[] {
+  // FIXME:
+  // 실험시 어떤 스크립트로 동작했는지 프론트에 띄우기 위해 public으로 선언
+  // private로 변경 필요
+  public buildScript(ctx: ChatBotContext, message: string): QueryRow[] {
     const {titleOfArtWork} = ctx;
     return [
       ...PROMPTS.prefixPrompt,
