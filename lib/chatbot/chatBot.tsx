@@ -1,7 +1,7 @@
 import {Model, QueryRow} from "./model"
 import {PROMPTS} from "./prompt"
 
-interface ChatBotContext {
+export interface ChatBotContext {
   titleOfArtWork: "theStarryNight"
 };
 
