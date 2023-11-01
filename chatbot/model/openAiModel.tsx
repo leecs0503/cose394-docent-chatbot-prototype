@@ -1,11 +1,6 @@
-import {Model} from "."
 import {OpenAI} from "openai"
 
-
-interface QueryRow {
-  role: 'system' | 'user' | 'assistant';
-  content: string
-}
+import {Model, QueryRow} from "."
 
 export class StreamOpenAIModel implements Model{
   private openai: OpenAI
