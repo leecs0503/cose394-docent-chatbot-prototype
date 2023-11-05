@@ -1,6 +1,6 @@
-import {QueryRow} from "../model"
+import {QueryRow} from "../model";
 
-import {prompt as theStarryNight} from "./artworks/theStarryNight"
+import {prompt as theStarryNight} from "./artworks/theStarryNight";
 
 const prefixPrompt: QueryRow[] = [
   {role: "system", content: "당신과 대화자는 서울 국립현대미술관에서 현재 빈센트 반고흐 작품 전시회에 있습니다."},

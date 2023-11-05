@@ -1,13 +1,15 @@
-import 'server-only'
+import {OPENAI_API_KEY, OPENAI_MODEL_VERSION} from "../constants";
 
-import {ChatBot} from "./chatBot"
-import { StreamOpenAIModel } from "./model/openAiModel" 
-import {OPENAI_API_KEY, OPENAI_MODEL_VERSION} from "../constants"
+import {ChatBot} from "./chatBot";
+import { StreamOpenAIModel } from "./model/openAiModel" ;
+import { DummyModel } from "./model/dummyModel"
 
-const openAiModel = new StreamOpenAIModel(OPENAI_API_KEY,OPENAI_MODEL_VERSION,)
+const openAiModel = new StreamOpenAIModel(OPENAI_API_KEY, OPENAI_MODEL_VERSION);
+const dummyModel = new DummyModel()
 
 // FIXME: 전역 변수 사용 (error prone한 상황)
 // ->
 // 적절히 루트에 해당되는 서버 클래스를 구성하고, context에 composition으로 가져가는 것이 옳을 듯
 // nextjs에서 구현법을 모르는 상황
-export const openAiChatBot = new ChatBot(openAiModel)
+export const openAiChatBot = new ChatBot(openAiModel);
+// export const openAiChatBot = new ChatBot(dummyModel);

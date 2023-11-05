@@ -1,5 +1,5 @@
-import {Model, QueryRow} from "./model"
-import {PROMPTS} from "./prompt"
+import {Model, QueryRow} from "./model";
+import {PROMPTS} from "./prompt";
 
 export interface ChatBotContext {
   titleOfArtWork: "theStarryNight"

@@ -1,4 +1,4 @@
-import {QueryRow} from "../../model"
+import {QueryRow} from "../../model";
 
 export const prompt: QueryRow[] = [
   {
