@@ -1,14 +1,14 @@
-import {OpenAI} from "openai"
+import {OpenAI} from "openai";
 
-import {Model, QueryRow} from "."
+import {Model, QueryRow} from ".";
 
 export class StreamOpenAIModel implements Model{
-  private openai: OpenAI
+  private openai: OpenAI;
   constructor(
     apiKey: string,
     private modelVersion: string,
   ) {
-    this.openai = new OpenAI({apiKey})
+    this.openai = new OpenAI({apiKey});
   }
 
   async *predict(input: QueryRow[]) {
