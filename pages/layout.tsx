@@ -7,5 +7,5 @@ export default function RootLayout({
       <html lang="kr">
         <body>{children}</body>
       </html>
-    )
+    );
   }
