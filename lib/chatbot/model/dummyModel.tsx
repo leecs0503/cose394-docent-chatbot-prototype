@@ -16,14 +16,14 @@ export class DummyModel implements Model{
       "사",
       "아",
       "자",
-    ]
+    ];
 
   }
 
   async *predict(input: QueryRow[]) {
     for ( const data of this.mocked_data) {
-      await new Promise((res) => {setTimeout(res, 1000);})
-      yield data
+      await new Promise((res) => {setTimeout(res, 1000);});
+      yield data;
     }
   }
 }
