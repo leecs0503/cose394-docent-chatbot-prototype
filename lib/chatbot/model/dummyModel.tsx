@@ -3,26 +3,20 @@ import {OpenAI} from "openai";
 import {Model, QueryRow} from ".";
 
 export class DummyModel implements Model{
-  public mocked_data;
+  public lastInput;
   constructor(
+    public delay = 1000,
+    public mockedData = [
+      "가", "나", "다", "라", "마", "바", "사", "아", "자",
+    ],
   ) {
-    this.mocked_data = [
-      "가",
-      "나",
-      "다",
-      "라",
-      "마",
-      "바",
-      "사",
-      "아",
-      "자",
-    ];
-
+    this.lastInput = "";
   }
 
   async *predict(input: QueryRow[]) {
-    for ( const data of this.mocked_data) {
-      await new Promise((res) => {setTimeout(res, 1000);});
+    this.lastInput = input;
+    for ( const data of this.mockedData) {
+      await new Promise((res) => {setTimeout(res, this.delay);});
       yield data;
     }
   }
