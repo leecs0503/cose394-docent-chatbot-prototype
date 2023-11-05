@@ -1,21 +1,21 @@
+import Image from 'next/image';
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import Image from 'next/image'
 
 const Home = () => {
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
-  const [responseMessage, setResponseMessage] = useState("")
+  const [responseMessage, setResponseMessage] = useState("");
   const sendMessage = async () => {
     setIsSending(true);
     const requestId = uuidv4();
-    const responseMsg = []
+    const responseMsg = [];
     try {
-      let response = await sendChatRequest(requestId, message)
+      let response = await sendChatRequest(requestId, message);
       let data = await response.json();
       while (!data.done) {
-        responseMsg.push(data.value)
-        setResponseMessage(responseMsg.join(''))
+        responseMsg.push(data.value);
+        setResponseMessage(responseMsg.join(''));
         response = await sendChatRequest(requestId, message);
         data = await response.json();
       }

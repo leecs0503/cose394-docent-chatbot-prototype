@@ -1,11 +1,11 @@
 import {OPENAI_API_KEY, OPENAI_MODEL_VERSION} from "../constants";
 
 import {ChatBot} from "./chatBot";
+import { DummyModel } from "./model/dummyModel";
 import { StreamOpenAIModel } from "./model/openAiModel" ;
-import { DummyModel } from "./model/dummyModel"
 
 const openAiModel = new StreamOpenAIModel(OPENAI_API_KEY, OPENAI_MODEL_VERSION);
-const dummyModel = new DummyModel()
+const dummyModel = new DummyModel();
 
 // FIXME: 전역 변수 사용 (error prone한 상황)
 // ->
