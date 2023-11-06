@@ -29,10 +29,10 @@ const Home = () => {
   return (
     <div>
       <Image
-        src="/images/starry_night.jpg" // 실제 경로는 `public/images/example.png`입니다.
+        src="/images/starry_night.jpg"
         alt="starry_night"
-        width={450} // 원하는 이미지의 너비
-        height={356} // 원하는 이미지의 높이
+        width={450}
+        height={356}
       />
       <h1>별이 빛나는 밤 (The Starry Night)</h1>
       <div>
