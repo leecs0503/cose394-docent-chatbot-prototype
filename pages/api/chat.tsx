@@ -1,15 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-const generators = {};
-import {openAiChatBot} from "../../../lib/chatbot";
-import {ChatBotContext} from "../../../lib/chatbot/chatBot";
+import {openAiChatBot} from "../../lib/chatbot";
+import {ChatBotContext} from "../../lib/chatbot/chatBot";
 
-export async function POST(
+const generators = {};
+
+async function postHandler(
   req: NextApiRequest,
   res: NextApiResponse,
-) {
-  const { requestid: requestid } = req.query;
-  // XXX: 적절한 validation으로 변환
+){
+  const { requestid } = req.query;
+  
   if (typeof requestid != "string"){
     return res.status(400).json("`requestid`should exist in query and type of requestid should be string.");
   }
@@ -32,4 +33,15 @@ async function buildGenerator(message) {
     ctx,
     message,
   );
+}
+
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  if (req.method != "POST") {
+    return res.status(405);
+  }
+  return await postHandler(req, res);
 }
