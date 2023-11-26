@@ -17,8 +17,9 @@ CREATE TABLE path (
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE path_point (
-    id      INT AUTO_INCREMENT PRIMARY KEY,
+    id      INT AUTO_INCREMENT,
     path_id INT                NOT NULL,
-    x INT                      NOT NULL,
-    y INT                      NOT NULL
+    x       INT                NOT NULL,
+    y       INT                NOT NULL,
+    PRIMARY KEY (id, path_id)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

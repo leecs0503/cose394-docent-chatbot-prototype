@@ -28,8 +28,8 @@ const Main = async () => {
 
     // 1. build insert sql from excels
     const files = await fs.readdir(ROOT_PATH);
-    result = [];
-    for (placeName of files) {
+    const result = [];
+    for (const placeName of files) {
         if (placeName.includes("README")) {
             continue;
         }
@@ -51,32 +51,36 @@ const processPlace = async(placeName) => {
     // 3. process paths
     // 4. accumulate placeID
 
-    placePath = `${ROOT_PATH}/${placeName}`;
+    const placePath = `${ROOT_PATH}/${placeName}`;
     // 1. process place
-    placeResult = await processPlaceQuery(placeName);
+    const placeResult = await processPlaceQuery(placeName);
     // 2. process artwork file
-    artworkResult = await processArtwork(placePath);
+    const artworkResult = await processArtwork(placePath);
     // 3. process paths
-    pathsResult = await processPaths(placePath);
+    const pathsResult = await processPaths(placePath);
     // 4. accumulate placeID
     placeID += 1;
 
-    return [...placeResult, ...artworkResult, ...pathsResult];
+    return [
+        ...placeResult,
+        ...artworkResult,
+        ...pathsResult,
+    ];
 };
 
 const processPlaceQuery = async (placeName) => {
-    placeData = {
+    const placeData = {
         key: ["ID", "name"],
         values: [[placeID, placeName]],
     };
-    placeResult = InsertQueryOf(TABLE_NAME_PLACE, placeData);
+    const placeResult = InsertQueryOf(TABLE_NAME_PLACE, placeData);
     return [placeResult];
 };
 
 const processArtwork = async (placePath) => {
-    artworksFilePath = `${placePath}/${ART_WORK_FILE_NAME}`;
-    artworksData = await ReadExcel(artworksFilePath);
-    artworkResult = InsertQueryOf(TABLE_NAME_ART_WORK, artworksData);
+    const artworksFilePath = `${placePath}/${ART_WORK_FILE_NAME}`;
+    const artworksData = await ReadExcel(artworksFilePath);
+    const artworkResult = InsertQueryOf(TABLE_NAME_ART_WORK, artworksData);
     return [artworkResult];
 };
 
@@ -87,30 +91,31 @@ const processPaths = async (placePath) => {
     //     2. process path point sql
     //     3. accumulate result
     const files = await fs.readdir(placePath);
-    result = [];
-    for (fileName of files) {
+    const result = [];
+    for (const fileName of files) {
         if (!fileName.includes(PATH_FILE_PREFIX)) {
             continue;
         }
         if (!fileName.includes(".xlsx")) {
             continue;
         }
-        filePath = `${placePath}/${fileName}`;
+        const filePath = `${placePath}/${fileName}`;
         // 1. process path sql
-        pathResult = await ProcessPath(pathID, fileName.replace(".xlsx", ""));
+        const pathResult = await ProcessPath(pathID, fileName.replace(".xlsx", ""));
 
         // 2. process path sql
-        pathPointResult = await ProcessPathPoint(filePath);
+        const pathPointResult = await ProcessPathPoint(filePath);
 
         // 3. accumulate result
-        result.push(...pathResult, ...pathPointResult);
+        result.push(...pathResult)
+        result.push(...pathPointResult);
         pathID += 1;
     }
     return result;
 };
 
 const ProcessPath = async (pathID, name) => {
-    data = {
+    const data = {
         key: ["id", "name"],
         values: [[pathID, name]],
     };
@@ -118,13 +123,13 @@ const ProcessPath = async (pathID, name) => {
 };
 
 const ProcessPathPoint = async (filePath) => {
-    data = await ReadExcel(filePath);
+    const data = await ReadExcel(filePath);
     AddConstantValueToData(data, "path_id", pathID);
     return [InsertQueryOf(TABLE_NAME_PATH_POINT, data)];
 };
 
 const ReadExcel = async (path) => {
-    rows = await readXlsxFile(path);
+    const rows = await readXlsxFile(path);
     if (rows.length == 0) exit(1);
     return {
         key: rows[0],
@@ -133,8 +138,8 @@ const ReadExcel = async (path) => {
 };
 
 const InsertQueryOf = (tableName, data) => {
-    keyQuery = `(${data.key.join(", ")})`;
-    valuesQuery = data.values.map(value => `(${value.map(
+    const keyQuery = `(${data.key.join(", ")})`;
+    const valuesQuery = data.values.map(value => `(${value.map(
         x=>(isNaN(x))?`"${x}"`:x
     ).join(", ")})`).join(", ");
     return `INSERT INTO ${tableName} ${keyQuery} VALUES ${valuesQuery};`;
