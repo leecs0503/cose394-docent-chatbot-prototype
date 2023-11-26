@@ -111,8 +111,8 @@ const processPaths = async (placePath) => {
         const pathPointResult = await ProcessPathPoint(filePath);
 
         // 3. accumulate result
-        result.push(`-- pathID: ${pathID} (파일: ${fileName})`)
-        result.push(...pathResult)
+        result.push(`-- pathID: ${pathID} (파일: ${fileName})`);
+        result.push(...pathResult);
         result.push(...pathPointResult);
         pathID += 1;
     }
