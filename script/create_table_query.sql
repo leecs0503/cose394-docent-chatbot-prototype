@@ -12,12 +12,14 @@ CREATE TABLE art_work (
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE path (
-    id   INT          PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    id       INT          NOT NULL,
+    place_id INT          NOT NULL,
+    name     VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id, place_id)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE path_point (
-    id      INT,
+    id      INT NOT NULL,
     path_id INT NOT NULL,
     x       INT NOT NULL,
     y       INT NOT NULL,

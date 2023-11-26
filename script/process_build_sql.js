@@ -17,16 +17,16 @@ TABLE_NAME_PATH_POINT = "path_point";
 CREATE_TABLE_SQL_FILE_PATH = "./script/create_table_query.sql";
 
 // XXX: To simplize the code, use global variable. (because it's script.)
-let placeID = 0;
-let pathID = 0;
+let placeID = 1;
+let pathID = 1;
 
 const Main = async () => {
-    // 1. build insert sql from excels
-    // 2. read create table sql
-    // 3. make init sql file to ./e2e/db/setup.sql
+    // 1. build insert sql from excels.
+    // 2. read create table sql.
+    // 3. make init_sql file and save to './e2e/db/setup.sql'.
 
 
-    // 1. build insert sql from excels
+    // 1. build insert sql from excels.
     const files = await fs.readdir(ROOT_PATH);
     const result = [];
     for (const placeName of files) {
@@ -37,26 +37,26 @@ const Main = async () => {
         result.push(...insertSqls);
     }
 
-    // 2. read create table sql
+    // 2. read create table sql.
     const create_table_sql = (await fs.readFile(CREATE_TABLE_SQL_FILE_PATH)).toString();
 
-    // 3. make init sql file to ./.data/setup.sql
+    // 3. make init_sql file and save to './e2e/db/setup.sql'.
     const finalResult = create_table_sql + "\n\n" + result.join("\n") + "\n";
     await fs.writeFile(RESULT_FILE_PATH, finalResult);
 };
 
 const processPlace = async(placeName) => {
-    // 1. process place
-    // 2. process artwork file
-    // 3. process paths
-    // 4. accumulate placeID
+    // 1. build place table query.
+    // 2. build artwork table query.
+    // 3. build path, path_point table query.
+    // 4. accumulate placeID.
 
     const placePath = `${ROOT_PATH}/${placeName}`;
-    // 1. process place
+    // 1. build place table query.
     const placeResult = await processPlaceQuery(placeName);
-    // 2. process artwork file
+    // 2. build artwork table query.
     const artworkResult = await processArtwork(placePath);
-    // 3. process paths
+    // 3. build path, path_point table query.
     const pathsResult = await processPaths(placePath);
     // 4. accumulate placeID
     placeID += 1;
@@ -89,11 +89,11 @@ const processArtwork = async (placePath) => {
 };
 
 const processPaths = async (placePath) => {
-    // 1. find files
-    //   for each file
-    //     1. process path sql
-    //     2. process path point sql
-    //     3. accumulate result
+    // 1. find files.
+    //   for each file,
+    //     1. process path sql.
+    //     2. process path point sql.
+    //     3. accumulate result.
     const files = await fs.readdir(placePath);
     const result = [];
     for (const fileName of files) {
@@ -121,8 +121,8 @@ const processPaths = async (placePath) => {
 
 const ProcessPath = async (pathID, name) => {
     const data = {
-        key: ["id", "name"],
-        values: [[pathID, name]],
+        key: ["id", "place_id", "name"],
+        values: [[pathID, placeID, name]],
     };
     return [InsertQueryOf(TABLE_NAME_PATH, data)];
 };
