@@ -62,15 +62,18 @@ const processPlace = async(placeName) => {
     placeID += 1;
 
     return [
+        "\n-- place 쿼리:",
         ...placeResult,
+        "\n-- artwork 쿼리:",
         ...artworkResult,
+        "\n-- path 관련 쿼리:",
         ...pathsResult,
     ];
 };
 
 const processPlaceQuery = async (placeName) => {
     const placeData = {
-        key: ["ID", "name"],
+        key: ["id", "name"],
         values: [[placeID, placeName]],
     };
     const placeResult = InsertQueryOf(TABLE_NAME_PLACE, placeData);
@@ -80,6 +83,7 @@ const processPlaceQuery = async (placeName) => {
 const processArtwork = async (placePath) => {
     const artworksFilePath = `${placePath}/${ART_WORK_FILE_NAME}`;
     const artworksData = await ReadExcel(artworksFilePath);
+    AddConstantValueToData(artworksData, "place_id", placeID);
     const artworkResult = InsertQueryOf(TABLE_NAME_ART_WORK, artworksData);
     return [artworkResult];
 };
@@ -107,6 +111,7 @@ const processPaths = async (placePath) => {
         const pathPointResult = await ProcessPathPoint(filePath);
 
         // 3. accumulate result
+        result.push(`-- pathID: ${pathID} (파일: ${fileName})`)
         result.push(...pathResult)
         result.push(...pathPointResult);
         pathID += 1;
@@ -131,6 +136,10 @@ const ProcessPathPoint = async (filePath) => {
 const ReadExcel = async (path) => {
     const rows = await readXlsxFile(path);
     if (rows.length == 0) exit(1);
+    for (const idx in rows[0]) {
+        if(rows[0][idx] == 'ID') rows[0][idx] = 'id';
+    }
+
     return {
         key: rows[0],
         values: rows.slice(1),
@@ -141,8 +150,9 @@ const InsertQueryOf = (tableName, data) => {
     const keyQuery = `(${data.key.join(", ")})`;
     const valuesQuery = data.values.map(value => `(${value.map(
         x=>(isNaN(x))?`"${x}"`:x
-    ).join(", ")})`).join(", ");
-    return `INSERT INTO ${tableName} ${keyQuery} VALUES ${valuesQuery};`;
+    ).join(", ")})`).join(",\n              ");
+    return `INSERT INTO ${tableName} ${keyQuery}
+       VALUES ${valuesQuery};`;
 };
 
 const AddConstantValueToData = (data, key, value) => {
