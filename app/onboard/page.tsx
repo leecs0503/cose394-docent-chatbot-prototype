@@ -9,29 +9,10 @@ interface StepProps {
   description: string;
   image: string;
   imageAlt: string;
-  currentStep: number;
-  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+  onNextClick: () => void;
 }
 
-function Step({
-  title,
-  description,
-  image,
-  imageAlt,
-  currentStep,
-  setCurrentStep,
-}: StepProps) {
-  const router = useRouter();
-
-  const nextStep = () => {
-    if (currentStep === 2) {
-      router.push("/place");
-      return;
-    }
-
-    setCurrentStep((prev) => prev + 1);
-  };
-
+function Step({ title, description, image, imageAlt, onNextClick }: StepProps) {
   return (
     <div>
       <img className="aspect-square bg-stone-300" src={image} alt={imageAlt} />
@@ -40,7 +21,7 @@ function Step({
         <p className="text-stone-500">{description}</p>
       </div>
       <button
-        onClick={nextStep}
+        onClick={onNextClick}
         className="btn w-auto h-auto rounded-full aspect-square p-4 btn-primary shadow-md shadow-primary/30 absolute right-6 bottom-6"
       >
         <ArrowRight size={36} />
@@ -50,7 +31,7 @@ function Step({
 }
 
 export default function OnBoard() {
-  const steps = [
+  const ONBOARDING_STEPS = [
     {
       title: "도손트는 누구에게나 ’손쉬운’\n관광 문화를 만듭니다.",
       description: "여기에 설명 작성",
@@ -73,12 +54,16 @@ export default function OnBoard() {
   ];
 
   const [currentStep, setCurrentStep] = useState(0);
+  const router = useRouter();
 
-  return (
-    <Step
-      {...steps[currentStep]}
-      currentStep={currentStep}
-      setCurrentStep={setCurrentStep}
-    />
-  );
+  const onNextClick = () => {
+    if (currentStep === ONBOARDING_STEPS.length - 1) {
+      router.push("/place");
+      return;
+    }
+
+    setCurrentStep((prev) => prev + 1);
+  };
+
+  return <Step {...ONBOARDING_STEPS[currentStep]} onNextClick={onNextClick} />;
 }
