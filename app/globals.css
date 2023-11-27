@@ -1,5 +1,9 @@
 @tailwind base;
 @tailwind components;
+<<<<<<< HEAD
 @tailwind utilities;
 
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable-dynamic-subset.css");
+=======
+@tailwind utilities;
+>>>>>>> 0f5f825 (init: Tailwind CSS 작동에 필요한 의존성 설치 및 globals.css 작성)
