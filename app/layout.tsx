@@ -7,7 +7,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body className="max-w-2xl mx-auto min-h-[100dvh]">{children}</body>
+      <body className="relative max-w-2xl mx-auto min-h-[100dvh]">
+        {children}
+      </body>
     </html>
   );
 }
