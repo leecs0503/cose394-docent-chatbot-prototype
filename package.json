@@ -29,7 +29,10 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8.4.31",
+<<<<<<< HEAD
     "read-excel-file": "^5.7.1",
+=======
+>>>>>>> 0f5f825 (init: Tailwind CSS 작동에 필요한 의존성 설치 및 globals.css 작성)
     "tailwindcss": "^3.3.5",
     "ts-node": "^10.9.1",
     "typescript": "5.2.2"
