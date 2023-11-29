@@ -25,7 +25,7 @@ export class DBHandler {
     }
 
     async getPathPoints(pathId: number): Promise<PathPoint[]> {
-        const sql = "SELECT id, placeId, x, y FROM path_point WHERE place_id = ?;";
+        const sql = "SELECT id, pathId, x, y FROM path_point WHERE place_id = ?;";
         const args = [pathId];
         const result = await this.db.get(sql, args);
         return result;
