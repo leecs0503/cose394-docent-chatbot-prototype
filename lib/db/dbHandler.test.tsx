@@ -1,6 +1,5 @@
-import {DBHandler} from "./dbHandler"
-import {BaseDB} from "./db"
-import {Place, ArtWork, Path, PathPoint} from "../interfaces"
+import {BaseDB} from "./db";
+import {DBHandler} from "./dbHandler";
 
 interface DummyDBMockedReturnValue{
   get: any[][]
@@ -10,7 +9,7 @@ class DummyDB extends BaseDB{
   public callNum = 0;
   public lastSQL = "";
   public lastArgs = [];
-  constructor (private mockedReturnValues: DummyDBMockedReturnValue) {super()}
+  constructor (private mockedReturnValues: DummyDBMockedReturnValue) {super();}
 
   async get(sql: string, args: any[]) {
     this.callNum += 1;
@@ -32,7 +31,7 @@ describe('DBHandlerWithDummyDBTest', () => {
 
     const dummyDB = new DummyDB({"get": [[1, "123", "456"]]});
     const dbHandler = new DBHandler(dummyDB);
-    const result = await dbHandler.getPlaces()
+    const result = await dbHandler.getPlaces();
     expect(result).toEqual(expectedReturn);
     expect(dummyDB.callNum).toEqual(expectedCallNum);
     expect(dummyDB.lastSQL).toContain("SELECT");
@@ -57,7 +56,8 @@ describe('DBHandlerWithDummyDBTest', () => {
 
     const dummyDB = new DummyDB({"get": [[1, 2, "123", "456", "789"]]});
     const dbHandler = new DBHandler(dummyDB);
-    const result = await dbHandler.getArtWorks(66)
+    const result = await dbHandler.getArtWorks(66);
+
     expect(result).toEqual(expectedReturn);
     expect(dummyDB.callNum).toEqual(expectedCallNum);
     expect(dummyDB.lastSQL).toContain("SELECT");
@@ -80,7 +80,8 @@ describe('DBHandlerWithDummyDBTest', () => {
 
     const dummyDB = new DummyDB({"get": [[1, 2, "123"]]});
     const dbHandler = new DBHandler(dummyDB);
-    const result = await dbHandler.getPaths(66)
+    const result = await dbHandler.getPaths(66);
+
     expect(result).toEqual(expectedReturn);
     expect(dummyDB.callNum).toEqual(expectedCallNum);
     expect(dummyDB.lastSQL).toContain("SELECT");
@@ -104,7 +105,8 @@ describe('DBHandlerWithDummyDBTest', () => {
 
     const dummyDB = new DummyDB({"get": [[1, 2, 3, 4]]});
     const dbHandler = new DBHandler(dummyDB);
-    const result = await dbHandler.getPathPoints(66)
+    const result = await dbHandler.getPathPoints(66);
+
     expect(result).toEqual(expectedReturn);
     expect(dummyDB.callNum).toEqual(expectedCallNum);
     expect(dummyDB.lastSQL).toContain("SELECT");
