@@ -1,4 +1,4 @@
-interface PlaceDetailProps {
+interface PlaceInfoProps {
   id: string;
   name: string;
   description: string;
@@ -6,13 +6,7 @@ interface PlaceDetailProps {
   imageAlt: string;
 }
 
-function PlaceDetail({
-  id,
-  name,
-  description,
-  image,
-  imageAlt,
-}: PlaceDetailProps) {
+function PlaceInfo({ id, name, description, image, imageAlt }: PlaceInfoProps) {
   return (
     <div>
       <img className="aspect-video bg-stone-300" src={image} alt={imageAlt} />
@@ -32,13 +26,13 @@ function PlaceDetail({
   );
 }
 
-export default function Place({
+export default function PlaceDetail({
   params: { placeId },
 }: {
   params: { placeId: string };
 }) {
   return (
-    <PlaceDetail
+    <PlaceInfo
       id={placeId}
       name={placeId}
       description={placeId}
