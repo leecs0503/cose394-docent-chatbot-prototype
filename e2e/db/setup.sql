@@ -1,6 +1,7 @@
 CREATE TABLE place (
-    id   INT          PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    id          INT          PRIMARY KEY,
+    name        VARCHAR(255) NOT NULL
+    description VARCHAR(500) NOT NULL DEFAULT ''
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE art_work (
