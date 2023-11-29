@@ -1,10 +1,10 @@
-interface Place {
+export interface Place {
   id: number;
   name: string;
   description: string;
 };
 
-interface ArtWork {
+export interface ArtWork {
   id: number;
   place_id: number;
   name: string;
@@ -12,15 +12,16 @@ interface ArtWork {
   description: string;
 };
 
-interface Path {
+export interface Path {
   id: number;
   place_id: number;
   name: string;
 };
 
-interface PathPoint {
-  id:number;
-  path_id:number;
-  x:number;
-  y:number;
+export interface PathPoint {
+  id: number;
+  path_id: number;
+  x: number;
+  y: number;
 };
+
