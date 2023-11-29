@@ -1,0 +1,23 @@
+version: '3.1'
+
+services:
+  db:
+    image: mysql:8.0.35-debian
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: docent
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      # environment:
+      MYSQL_CHARACTER_SET_SERVER: utf8mb4
+      MYSQL_COLLATION_SERVER: utf8mb4_unicode_ci
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./e2e/db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
