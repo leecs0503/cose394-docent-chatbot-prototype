@@ -1,11 +1,15 @@
+import "./globals.css";
+
 export default function RootLayout({
-    children,
-  }: {
-    children: React.ReactNode
-  }) {
-    return (
-      <html lang="kr">
-        <body>{children}</body>
-      </html>
-    );
-  }
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="ko">
+      <body className="relative max-w-2xl mx-auto min-h-[100dvh]">
+        {children}
+      </body>
+    </html>
+  );
+}
