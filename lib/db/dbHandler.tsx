@@ -5,11 +5,9 @@ import {BaseDB} from "./db";
 export class DBHandler {
     constructor(private db: BaseDB) {}
     async getPlace(): Promise<Place[]> {
-        return [{
-            id: 1,
-            name: "123",
-            description: "123",
-        }];
+        const sql = "SELECT (id, name, description) from place;";
+        const result = await this.db.get(sql, []);
+        return result.map(([id, name, description]) => ({id, name, description}));
     }
 
     async getArtWork(): Promise<ArtWork[]> {
