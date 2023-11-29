@@ -3,7 +3,7 @@ import mysql from "mysql2/promise";
 import {BaseDB} from "./db";
 
 export class MysqlDB extends BaseDB {
-  private connection;
+  private pool;
   private ready;
 
   constructor (
@@ -14,11 +14,12 @@ export class MysqlDB extends BaseDB {
   ) {
     super();
     this.ready = new Promise(async (res, rej)=>{
-      this.connection = await mysql.createConnection({
+      this.pool = await mysql.createPool({
         host     : dbHost,
         user     : dbUser,
         password : dbPassword,
         database : dbName,
+        rowsAsArray: true,
       });
       res(true);
     });
@@ -29,7 +30,7 @@ export class MysqlDB extends BaseDB {
     args: any[],
   ) {
       await this.ready;
-      const result = await this.connection.query(sql, args);
+      const result = await this.pool.query(sql, args);
       return result[0];
   }
 }
