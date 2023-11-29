@@ -12,13 +12,15 @@ function Card({ id, name, description, Icon, placeId }: CardProps) {
   return (
     <a
       href={`/place/${placeId}/path/${id}`}
-      className="btn h-auto bg-base-100 rounded-xl shadow-lg flex p-5 gap-3 justify-between items-center flex-nowrap"
+      className="btn h-auto bg-base-100 rounded-xl shadow-lg flex p-5 gap-4 justify-between items-center flex-nowrap"
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         <Icon size={36} className="text-primary shrink-0" />
-        <div className="flex flex-col break-keep text-left">
-          <h2 className="text-lg font-bold text-neutral">{name}</h2>
-          <p className="text-neutral/80">{description}</p>
+        <div className="flex flex-col break-keep text-left gap-1">
+          <h2 className="text-lg font-bold text-neutral leading-snug">
+            {name}
+          </h2>
+          <p className="text-neutral/80 leading-snug">{description}</p>
         </div>
       </div>
       <ChevronRight className="text-neutral shrink-0" />
