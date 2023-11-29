@@ -1,5 +1,6 @@
 import {BaseDB} from "./db";
 import {DBHandler} from "./dbHandler";
+import {Place, ArtWork, Path, PathPoint} from "../interfaces"
 
 interface DummyDBMockedReturnValue{
   get: any[]
@@ -21,7 +22,7 @@ class DummyDB extends BaseDB{
 
 describe('DBHandlerWithDummyDBTest', () => {
   it('getPlaces test', async () => {
-    const expectedReturn = [{
+    const expectedReturn: Place[] = [{
       id: 1,
       name: "123",
       description: "456",
@@ -44,19 +45,20 @@ describe('DBHandlerWithDummyDBTest', () => {
   });
 
   it('getArtWorks test', async () => {
-    const expectedReturn = [{
+    const argPlaceId = 2;
+    const expectedReturn: ArtWork[] = [{
       id: 1,
-      placeId: 2,
+      placeId: argPlaceId,
       name: "123",
       summary: "456",
       description: "789",
     }];
     const expectedCallNum = 1;
-    const expectedArgs = [66];
+    const expectedArgs = [argPlaceId];
 
     const dummyDB = new DummyDB({"get": expectedReturn});
     const dbHandler = new DBHandler(dummyDB);
-    const result = await dbHandler.getArtWorks(66);
+    const result = await dbHandler.getArtWorks(argPlaceId);
 
     expect(result).toEqual(expectedReturn);
     expect(dummyDB.callNum).toEqual(expectedCallNum);
@@ -70,17 +72,18 @@ describe('DBHandlerWithDummyDBTest', () => {
   });
 
   it('getPaths test', async () => {
-    const expectedReturn = [{
+    const argPlaceId = 2;
+    const expectedReturn: Path[] = [{
       id: 1,
-      placeId: 2,
+      placeId: argPlaceId,
       name: "123",
     }];
     const expectedCallNum = 1;
-    const expectedArgs = [66];
+    const expectedArgs = [argPlaceId];
 
     const dummyDB = new DummyDB({"get": expectedReturn});
     const dbHandler = new DBHandler(dummyDB);
-    const result = await dbHandler.getPaths(66);
+    const result = await dbHandler.getPaths(argPlaceId);
 
     expect(result).toEqual(expectedReturn);
     expect(dummyDB.callNum).toEqual(expectedCallNum);
@@ -94,18 +97,19 @@ describe('DBHandlerWithDummyDBTest', () => {
   });
 
   it('getPathPoints test', async () => {
-    const expectedReturn = [{
+    const argPathId = 2;
+    const expectedReturn: PathPoint[] = [{
       id: 1,
-      placeId: 2,
+      pathId: argPathId,
       x: 3,
       y: 4,
     }];
     const expectedCallNum = 1;
-    const expectedArgs = [66];
+    const expectedArgs = [argPathId];
 
     const dummyDB = new DummyDB({"get": expectedReturn});
     const dbHandler = new DBHandler(dummyDB);
-    const result = await dbHandler.getPathPoints(66);
+    const result = await dbHandler.getPathPoints(argPathId);
 
     expect(result).toEqual(expectedReturn);
     expect(dummyDB.callNum).toEqual(expectedCallNum);
