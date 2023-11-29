@@ -6,7 +6,7 @@ export interface Place {
 
 export interface ArtWork {
   id: number;
-  place_id: number;
+  placeId: number;
   name: string;
   summary: string;
   description: string;
@@ -14,13 +14,13 @@ export interface ArtWork {
 
 export interface Path {
   id: number;
-  place_id: number;
+  placeId: number;
   name: string;
 };
 
 export interface PathPoint {
   id: number;
-  path_id: number;
+  pathId: number;
   x: number;
   y: number;
 };
