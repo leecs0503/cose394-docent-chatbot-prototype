@@ -1,26 +1,36 @@
-import { ChevronRight, LucideIcon, Map, Timer } from "lucide-react";
+import { AlarmClock, ChevronRight, Compass, Map } from "lucide-react";
+
+import { Path } from "../../../../lib/interfaces";
 
 interface CardProps {
-  id: string;
-  name: string;
-  description: string;
-  Icon: LucideIcon;
-  placeId: string;
+  path: Path;
 }
 
-function Card({ id, name, description, Icon, placeId }: CardProps) {
+function Card({ path }: CardProps) {
+  const Icon = (function () {
+    // FIXME: placeId도 봐야 함
+    switch (path.name) {
+      case "역사를 좋아하는 역사가 타입":
+        return Compass;
+      case "바쁘다 바빠 고대인! 꼭 봐야 할 것만":
+        return AlarmClock;
+      default:
+        return Map;
+    }
+  })();
+
   return (
     <a
-      href={`/place/${placeId}/path/${id}`}
+      href={`/place/${path.placeId}/path/${path.id}`}
       className="btn h-auto bg-base-100 rounded-xl shadow-lg flex p-5 gap-4 justify-between items-center flex-nowrap"
     >
       <div className="flex items-center gap-4">
         <Icon size={36} className="text-primary shrink-0" />
         <div className="flex flex-col break-keep text-left gap-1">
           <h2 className="text-lg font-bold text-neutral leading-snug">
-            {name}
+            {path.name}
           </h2>
-          <p className="text-neutral/80 leading-snug">{description}</p>
+          <p className="text-neutral/80 leading-snug">{path.description}</p>
         </div>
       </div>
       <ChevronRight className="text-neutral shrink-0" />
@@ -34,18 +44,18 @@ export default function Path({
   params: { placeId: string };
 }) {
   // TODO: fetch paths from backend based on placeId
-  const PATHS = [
+  const PATHS: Path[] = [
     {
-      id: "0",
+      id: 0,
+      placeId: parseInt(placeId),
       name: "역사를 좋아하는 역사가 타입",
       description: "시간 순으로 따라가자!",
-      Icon: Timer,
     },
     {
-      id: "1",
+      id: 1,
+      placeId: parseInt(placeId),
       name: "바쁘다 바빠 고대인! 꼭 봐야 할 것만",
       description: "최적의 동선으로 관람하자!",
-      Icon: Map,
     },
   ];
 
@@ -57,7 +67,7 @@ export default function Path({
       <ul className="flex flex-col gap-4 items-center">
         {PATHS.map((path) => (
           <li key={path.id} className="w-full">
-            <Card {...path} placeId={placeId} />
+            <Card path={path} />
           </li>
         ))}
       </ul>
