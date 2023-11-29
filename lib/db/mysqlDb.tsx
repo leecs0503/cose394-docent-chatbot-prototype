@@ -1,10 +1,11 @@
-import mysql from "promise-mysql";
+import mysql from "mysql2/promise";
 
 import {BaseDB} from "./db";
 
 export class MysqlDB extends BaseDB {
   private connection;
   private ready;
+
   constructor (
     dbHost: string,
     dbUser: string,
@@ -22,12 +23,13 @@ export class MysqlDB extends BaseDB {
       res(true);
     });
   }
+
   async get(
     sql: string,
     args: any[],
   ) {
       await this.ready;
       const result = await this.connection.query(sql, args);
-      return result;
+      return result[0];
   }
 }

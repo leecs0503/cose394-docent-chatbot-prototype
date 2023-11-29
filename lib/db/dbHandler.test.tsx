@@ -2,7 +2,7 @@ import {BaseDB} from "./db";
 import {DBHandler} from "./dbHandler";
 
 interface DummyDBMockedReturnValue{
-  get: any[][]
+  get: any[]
 }
 
 class DummyDB extends BaseDB{
@@ -29,7 +29,7 @@ describe('DBHandlerWithDummyDBTest', () => {
     const expectedCallNum = 1;
     const expectedArgs = [];
 
-    const dummyDB = new DummyDB({"get": [[1, "123", "456"]]});
+    const dummyDB = new DummyDB({"get": expectedReturn});
     const dbHandler = new DBHandler(dummyDB);
     const result = await dbHandler.getPlaces();
     expect(result).toEqual(expectedReturn);
@@ -54,7 +54,7 @@ describe('DBHandlerWithDummyDBTest', () => {
     const expectedCallNum = 1;
     const expectedArgs = [66];
 
-    const dummyDB = new DummyDB({"get": [[1, 2, "123", "456", "789"]]});
+    const dummyDB = new DummyDB({"get": expectedReturn});
     const dbHandler = new DBHandler(dummyDB);
     const result = await dbHandler.getArtWorks(66);
 
@@ -78,7 +78,7 @@ describe('DBHandlerWithDummyDBTest', () => {
     const expectedCallNum = 1;
     const expectedArgs = [66];
 
-    const dummyDB = new DummyDB({"get": [[1, 2, "123"]]});
+    const dummyDB = new DummyDB({"get": expectedReturn});
     const dbHandler = new DBHandler(dummyDB);
     const result = await dbHandler.getPaths(66);
 
@@ -103,7 +103,7 @@ describe('DBHandlerWithDummyDBTest', () => {
     const expectedCallNum = 1;
     const expectedArgs = [66];
 
-    const dummyDB = new DummyDB({"get": [[1, 2, 3, 4]]});
+    const dummyDB = new DummyDB({"get": expectedReturn});
     const dbHandler = new DBHandler(dummyDB);
     const result = await dbHandler.getPathPoints(66);
 

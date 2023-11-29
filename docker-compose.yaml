@@ -6,7 +6,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: docent
+      MYSQL_DATABASE: docont
       MYSQL_USER: user
       MYSQL_PASSWORD: password
       # environment:
