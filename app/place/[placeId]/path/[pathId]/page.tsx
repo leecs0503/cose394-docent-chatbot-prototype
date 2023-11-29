@@ -8,6 +8,8 @@ import {
   TransformWrapper,
 } from "react-zoom-pan-pinch";
 
+import { PathPoint } from "../../../../../lib/interfaces";
+
 interface BreadCrumbsProps {
   route: string[];
   active: number;
@@ -18,23 +20,14 @@ interface BottomSheetProps {
   backgroundColor: string;
 }
 
-interface PinProps {
-  id: number;
-  pathId: string;
-  x: number;
-  y: number;
+interface PathPointProps {
+  pathPoint: PathPoint;
 }
 
 interface InteractiveMapProps {
   mapImagePath: string;
   mapImageAlt: string;
-  // TODO: 타입 뽑아서 정리
-  pins: {
-    id: number;
-    pathId: string;
-    x: number;
-    y: number;
-  }[];
+  pathPoints: PathPoint[];
   backgroundColor: string;
 }
 
@@ -80,7 +73,7 @@ function BottomSheet({ route, backgroundColor }: BottomSheetProps) {
   );
 }
 
-function Pin({ id, pathId, x, y }: PinProps) {
+function PathPoint({ pathPoint }: PathPointProps) {
   // XXX: KeepScale 컴포넌트 쓸지 말지?
   // KeepScale 컴포넌트 사용 시 지도를 확대하거나 축소해도 핀의 크기는 변하지 않습니다.
 
@@ -95,10 +88,10 @@ function Pin({ id, pathId, x, y }: PinProps) {
     <KeepScale
       className="absolute top-0 left-0"
       style={{
-        left: `${(x / IMAGE_RESOLUTION.width) * 100}%`,
-        top: `${(y / IMAGE_RESOLUTION.height) * 100}%`,
+        left: `${(pathPoint.x / IMAGE_RESOLUTION.width) * 100}%`,
+        top: `${(pathPoint.y / IMAGE_RESOLUTION.height) * 100}%`,
       }}
-      key={id}
+      key={pathPoint.id}
     >
       {/* TODO: href 걸기 */}
       <a href={null}>
@@ -108,7 +101,7 @@ function Pin({ id, pathId, x, y }: PinProps) {
           className="text-red-600 drop-shadow-lg"
         />
         <div className="absolute inset-0 font-semibold text-lg text-white text-center">
-          {id + 1}
+          {pathPoint.id + 1}
         </div>
       </a>
     </KeepScale>
@@ -118,7 +111,7 @@ function Pin({ id, pathId, x, y }: PinProps) {
 function InteractiveMap({
   mapImagePath,
   mapImageAlt,
-  pins,
+  pathPoints,
   backgroundColor,
 }: InteractiveMapProps) {
   return (
@@ -136,8 +129,8 @@ function InteractiveMap({
       >
         <div className="relative">
           <img src={mapImagePath} alt={mapImageAlt} className="h-fit" />
-          {pins.map((pin) => (
-            <Pin key={pin.id} {...pin} />
+          {pathPoints.map((pathPoint) => (
+            <PathPoint pathPoint={pathPoint} key={pathPoint.id} />
           ))}
         </div>
       </TransformComponent>
@@ -150,23 +143,23 @@ export default function Path({
 }: {
   params: { pathId: string };
 }) {
-  // TODO: 루트 정보 받아오기
+  // TODO: 루트 정보와 pathpoints 받아오기
   const ROUTE = [
     "2층 역사민족전시실 → 고미술전시실",
     "고미술전시실 출구 오른쪽 에스컬레이터를 타시면 3층 현대미술관이 나옵니다.",
     "3층 현대미술전시실",
   ];
 
-  const PINS = [
+  const PATHPOINTS = [
     {
       id: 0,
-      pathId: pathId,
+      pathId: parseInt(pathId),
       x: 140,
       y: 406,
     },
     {
       id: 1,
-      pathId: pathId,
+      pathId: parseInt(pathId),
       x: 487,
       y: 82,
     },
@@ -186,7 +179,7 @@ export default function Path({
         <InteractiveMap
           mapImagePath="/maps/test_map.svg"
           mapImageAlt="테스트 지도"
-          pins={PINS}
+          pathPoints={PATHPOINTS}
           backgroundColor={BACKGROUND_COLOR}
         />
         <BottomSheet route={ROUTE} backgroundColor={BACKGROUND_COLOR} />
