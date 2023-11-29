@@ -67,28 +67,36 @@ function BreadCrumbs({ active, route }: BreadCrumbsProps) {
 
 function BottomSheet({ route, backgroundColor }: BottomSheetProps) {
   return (
-    <div className={`bg-[${backgroundColor}]`}>
-      <div className="bg-white rounded-t-xl shadow p-4 flex flex-col gap-4">
-        <div className="flex flex-col gap-4 p-2">
-          <h1 className="font-bold text-lg">[바쁘다 바빠 고대인!] 루트</h1>
-          <BreadCrumbs active={0} route={route} />
-        </div>
-        {/* TODO: href 걸기 */}
-        <a href={null} className="btn btn-primary">
-          관람 시작하기
-        </a>
+    <div className="bg-white rounded-t-xl shadow p-4 flex flex-col gap-4 absolute bottom-0 left-0 right-0">
+      <div className="flex flex-col gap-4 p-2">
+        <h1 className="font-bold text-lg">[바쁘다 바빠 고대인!] 루트</h1>
+        <BreadCrumbs active={0} route={route} />
       </div>
+      {/* TODO: href 걸기 */}
+      <a href={null} className="btn btn-primary">
+        관람 시작하기
+      </a>
     </div>
   );
 }
 
 function Pin({ id, pathId, x, y }: PinProps) {
+  // XXX: KeepScale 컴포넌트 쓸지 말지?
+  // KeepScale 컴포넌트 사용 시 지도를 확대하거나 축소해도 핀의 크기는 변하지 않습니다.
+
+  // XXX: 모든 지도에 대해 동일한 이미지 크기를 사용할 필요가 있습니다.
+
+  const IMAGE_RESOLUTION = {
+    width: 752,
+    height: 1178,
+  };
+
   return (
     <KeepScale
-      className={`absolute top-0 left-0`}
+      className="absolute top-0 left-0"
       style={{
-        marginLeft: `${x}px`,
-        marginTop: `${y}px`,
+        left: `${(x / IMAGE_RESOLUTION.width) * 100}%`,
+        top: `${(y / IMAGE_RESOLUTION.height) * 100}%`,
       }}
       key={id}
     >
@@ -115,11 +123,23 @@ function InteractiveMap({
 }: InteractiveMapProps) {
   return (
     <TransformWrapper>
-      <TransformComponent wrapperClass={`bg-[${backgroundColor}] relative`}>
-        <img src={mapImagePath} alt={mapImageAlt} />
-        {pins.map((pin) => (
-          <Pin key={pin.id} {...pin} />
-        ))}
+      <TransformComponent
+        wrapperClass={`bg-[${backgroundColor}]`}
+        wrapperStyle={{
+          height: "100%",
+        }}
+        contentClass="items-center"
+        contentStyle={{
+          height: "100%",
+          paddingBottom: "8rem",
+        }}
+      >
+        <div className="relative">
+          <img src={mapImagePath} alt={mapImageAlt} className="h-fit" />
+          {pins.map((pin) => (
+            <Pin key={pin.id} {...pin} />
+          ))}
+        </div>
       </TransformComponent>
     </TransformWrapper>
   );
@@ -162,7 +182,7 @@ export default function Path({
 
   return (
     <div>
-      <div className="flex flex-col h-[100dvh]">
+      <div className={`h-[100dvh] bg-[${BACKGROUND_COLOR}]`}>
         <InteractiveMap
           mapImagePath="/maps/test_map.svg"
           mapImageAlt="테스트 지도"
