@@ -20,6 +20,8 @@ class DummyDB extends BaseDB{
   }
 }
 
+const snake_of = (camel_case: string) => (camel_case.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`));
+
 describe('DBHandlerWithDummyDBTest', () => {
   it('getPlaces test', async () => {
     const expectedReturn: Place[] = [{
@@ -37,7 +39,7 @@ describe('DBHandlerWithDummyDBTest', () => {
     expect(dummyDB.callNum).toEqual(expectedCallNum);
     expect(dummyDB.lastSQL).toContain("SELECT");
     for (const key in expectedReturn[0]) {
-      expect(dummyDB.lastSQL).toContain(key);
+      expect(dummyDB.lastSQL).toContain(snake_of(key));
     }
     expect(dummyDB.lastSQL).toContain("FROM");
     expect(dummyDB.lastSQL).toContain("place");
@@ -64,7 +66,7 @@ describe('DBHandlerWithDummyDBTest', () => {
     expect(dummyDB.callNum).toEqual(expectedCallNum);
     expect(dummyDB.lastSQL).toContain("SELECT");
     for (const key in expectedReturn[0]) {
-      expect(dummyDB.lastSQL).toContain(key);
+      expect(dummyDB.lastSQL).toContain(snake_of(key));
     }
     expect(dummyDB.lastSQL).toContain("FROM");
     expect(dummyDB.lastSQL).toContain("artwork");
@@ -89,7 +91,7 @@ describe('DBHandlerWithDummyDBTest', () => {
     expect(dummyDB.callNum).toEqual(expectedCallNum);
     expect(dummyDB.lastSQL).toContain("SELECT");
     for (const key in expectedReturn[0]) {
-      expect(dummyDB.lastSQL).toContain(key);
+      expect(dummyDB.lastSQL).toContain(snake_of(key));
     }
     expect(dummyDB.lastSQL).toContain("FROM");
     expect(dummyDB.lastSQL).toContain("path");
@@ -115,7 +117,7 @@ describe('DBHandlerWithDummyDBTest', () => {
     expect(dummyDB.callNum).toEqual(expectedCallNum);
     expect(dummyDB.lastSQL).toContain("SELECT");
     for (const key in expectedReturn[0]) {
-      expect(dummyDB.lastSQL).toContain(key);
+      expect(dummyDB.lastSQL).toContain(snake_of(key));
     }
     expect(dummyDB.lastSQL).toContain("FROM");
     expect(dummyDB.lastSQL).toContain("path_point");

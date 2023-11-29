@@ -11,21 +11,21 @@ export class DBHandler {
     }
 
     async getArtWorks(placeId: number): Promise<ArtWork[]> {
-        const sql = "SELECT id, placeId, name, summary, description FROM artwork WHERE place_id = ?;";
+        const sql = "SELECT id, place_id, name, summary, description FROM artwork WHERE place_id = ?;";
         const args = [placeId];
         const result = await this.db.get(sql, args);
         return result;
     }
 
     async getPaths(placeId: number): Promise<Path[]> {
-        const sql = "SELECT id, placeId, name FROM path WHERE place_id = ?;";
+        const sql = "SELECT id, place_id, name FROM path WHERE place_id = ?;";
         const args = [placeId];
         const result = await this.db.get(sql, args);
         return result;
     }
 
     async getPathPoints(pathId: number): Promise<PathPoint[]> {
-        const sql = "SELECT id, pathId, x, y FROM path_point WHERE place_id = ?;";
+        const sql = "SELECT id, path_id, x, y FROM path_point WHERE path_id = ?;";
         const args = [pathId];
         const result = await this.db.get(sql, args);
         return result;
