@@ -16,7 +16,7 @@ function Step({ title, description, image, imageAlt, onNextClick }: StepProps) {
   return (
     <div>
       <img className="aspect-square bg-stone-300" src={image} alt={imageAlt} />
-      <div className="flex flex-col gap-3 p-6 break-keep">
+      <div className="flex flex-col gap-3 p-6 pb-28 break-keep">
         <h1 className="font-bold text-2xl whitespace-pre-wrap">{title}</h1>
         <p className="text-stone-500">{description}</p>
       </div>

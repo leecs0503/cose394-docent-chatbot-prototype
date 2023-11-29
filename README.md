@@ -20,6 +20,12 @@ npm install
 npm run lint
 npm run test
 ```
+### E2E
+기획파일에 해당되는 파일을 적절한 위치에 옮기고, (\* './script/example_plan.zip' 파일 참고, \* './.data' 추천)
+``` bash
+bash ./script/build_sql.sh ${FILE_PATH} # example: ./script/example_plan.zip
+docker compose up --build
+``````
 
 ## Architecture
 ![architecture](./resource/architecture.drawio.png)
