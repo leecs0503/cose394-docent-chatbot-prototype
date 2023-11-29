@@ -21,22 +21,98 @@ class DummyDB extends BaseDB{
 }
 
 describe('DBHandlerWithDummyDBTest', () => {
-  it('get_place test', async () => {
+  it('getPlaces test', async () => {
     const expectedReturn = [{
       id: 1,
       name: "123",
-      description: "123",
+      description: "456",
     }];
     const expectedCallNum = 1;
-    const expectedSQL = "SELECT (id, name, description) from place;";
     const expectedArgs = [];
 
-    const dummyDB = new DummyDB({"get": [[1, "123", "123"]]});
+    const dummyDB = new DummyDB({"get": [[1, "123", "456"]]});
     const dbHandler = new DBHandler(dummyDB);
-    const result = await dbHandler.getPlace()
+    const result = await dbHandler.getPlaces()
     expect(result).toEqual(expectedReturn);
     expect(dummyDB.callNum).toEqual(expectedCallNum);
-    expect(dummyDB.lastSQL).toEqual(expectedSQL);
+    expect(dummyDB.lastSQL).toContain("SELECT");
+    for (const key in expectedReturn[0]) {
+      expect(dummyDB.lastSQL).toContain(key);
+    }
+    expect(dummyDB.lastSQL).toContain("FROM");
+    expect(dummyDB.lastSQL).toContain("place");
+    expect(dummyDB.lastArgs).toEqual(expectedArgs);
+  });
+
+  it('getArtWorks test', async () => {
+    const expectedReturn = [{
+      id: 1,
+      placeId: 2,
+      name: "123",
+      summary: "456",
+      description: "789",
+    }];
+    const expectedCallNum = 1;
+    const expectedArgs = [66];
+
+    const dummyDB = new DummyDB({"get": [[1, 2, "123", "456", "789"]]});
+    const dbHandler = new DBHandler(dummyDB);
+    const result = await dbHandler.getArtWorks(66)
+    expect(result).toEqual(expectedReturn);
+    expect(dummyDB.callNum).toEqual(expectedCallNum);
+    expect(dummyDB.lastSQL).toContain("SELECT");
+    for (const key in expectedReturn[0]) {
+      expect(dummyDB.lastSQL).toContain(key);
+    }
+    expect(dummyDB.lastSQL).toContain("FROM");
+    expect(dummyDB.lastSQL).toContain("artwork");
+    expect(dummyDB.lastArgs).toEqual(expectedArgs);
+  });
+
+  it('getPaths test', async () => {
+    const expectedReturn = [{
+      id: 1,
+      placeId: 2,
+      name: "123",
+    }];
+    const expectedCallNum = 1;
+    const expectedArgs = [66];
+
+    const dummyDB = new DummyDB({"get": [[1, 2, "123"]]});
+    const dbHandler = new DBHandler(dummyDB);
+    const result = await dbHandler.getPaths(66)
+    expect(result).toEqual(expectedReturn);
+    expect(dummyDB.callNum).toEqual(expectedCallNum);
+    expect(dummyDB.lastSQL).toContain("SELECT");
+    for (const key in expectedReturn[0]) {
+      expect(dummyDB.lastSQL).toContain(key);
+    }
+    expect(dummyDB.lastSQL).toContain("FROM");
+    expect(dummyDB.lastSQL).toContain("path");
+    expect(dummyDB.lastArgs).toEqual(expectedArgs);
+  });
+
+  it('getPathPoints test', async () => {
+    const expectedReturn = [{
+      id: 1,
+      placeId: 2,
+      x: 3,
+      y: 4,
+    }];
+    const expectedCallNum = 1;
+    const expectedArgs = [66];
+
+    const dummyDB = new DummyDB({"get": [[1, 2, 3, 4]]});
+    const dbHandler = new DBHandler(dummyDB);
+    const result = await dbHandler.getPathPoints(66)
+    expect(result).toEqual(expectedReturn);
+    expect(dummyDB.callNum).toEqual(expectedCallNum);
+    expect(dummyDB.lastSQL).toContain("SELECT");
+    for (const key in expectedReturn[0]) {
+      expect(dummyDB.lastSQL).toContain(key);
+    }
+    expect(dummyDB.lastSQL).toContain("FROM");
+    expect(dummyDB.lastSQL).toContain("path_point");
     expect(dummyDB.lastArgs).toEqual(expectedArgs);
   });
 });
