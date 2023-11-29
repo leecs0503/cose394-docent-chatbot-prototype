@@ -1,4 +1,4 @@
-export default function Path({
+export default function PathDetail({
   params: { pathId },
 }: {
   params: { pathId: string };
