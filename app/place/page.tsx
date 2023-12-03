@@ -36,7 +36,7 @@ function Card({ place }: CardProps) {
 }
 
 export default async function PlacePage() {
-  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/place`);
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/place`, {cache: "no-cache"});
   const places: Place[] = await res.json();
   return (
     <div className="bg-primary min-h-[100dvh] flex justify-center">
