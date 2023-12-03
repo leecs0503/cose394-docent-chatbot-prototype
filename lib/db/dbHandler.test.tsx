@@ -80,11 +80,12 @@ describe('DBHandlerWithDummyDBTest', () => {
       id: 1,
       placeId: argPlaceId,
       name: "123",
+      description: "가가가",
     }];
     const expectedCallNum = 1;
     const expectedArgs = [argPlaceId];
 
-    const dummyDB = new DummyDB({"get": [[1, argPlaceId, "123"]]});
+    const dummyDB = new DummyDB({"get": [[1, argPlaceId, "123", "가가가"]]});
     const dbHandler = new DBHandler(dummyDB);
     const result = await dbHandler.getPaths(argPlaceId);
 
