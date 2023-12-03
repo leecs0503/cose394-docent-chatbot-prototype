@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import { ArtWork } from "../../../../../../lib/interfaces";
+import { ArtWork } from "@lib/interfaces";
 
 interface BottomSheetProps {
   artwork: ArtWork;
