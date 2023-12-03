@@ -14,7 +14,7 @@ TABLE_NAME_ART_WORK = "art_work";
 TABLE_NAME_PATH = "path";
 TABLE_NAME_PATH_POINT = "path_point";
 
-CREATE_TABLE_SQL_FILE_PATH = "./script/create_table_query.sql";
+CREATE_TABLE_SQL_FILE_PATH = "./script/postgres_create_table_query.sql";
 
 // XXX: To simplize the code, use global variable. (because it's script.)
 let placeID = 1;
@@ -149,7 +149,7 @@ const ReadExcel = async (path) => {
 const InsertQueryOf = (tableName, data) => {
     const keyQuery = `(${data.key.join(", ")})`;
     const valuesQuery = data.values.map(value => `(${value.map(
-        x=>(isNaN(x))?`"${x}"`:x
+        x=>(isNaN(x))?`'${x}'`:x
     ).join(", ")})`).join(",\n              ");
     return `INSERT INTO ${tableName} ${keyQuery}
        VALUES ${valuesQuery};`;
