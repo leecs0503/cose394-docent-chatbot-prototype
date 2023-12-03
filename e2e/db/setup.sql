@@ -1,3 +1,8 @@
+DROP TABLE IF EXISTS place;
+DROP TABLE IF EXISTS art_work;
+DROP TABLE IF EXISTS path;
+DROP TABLE IF EXISTS path_point;
+
 CREATE TABLE place (
     id          SERIAL       PRIMARY KEY,
     name        VARCHAR(255) NOT NULL,
