@@ -21,3 +21,18 @@
     font-weight: 300;
     font-style: normal;
 }
+
+@keyframes fadeout {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@layer components {
+    .animate-fadeout {
+        animation: fadeout 0.5s 3s ease-in-out forwards;
+    }
+}
