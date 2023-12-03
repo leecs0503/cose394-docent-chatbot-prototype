@@ -29,6 +29,8 @@ export default function End({
     setIsSubmitted(true);
   };
 
+  const formURL = process.env.NEXT_PUBLIC_GOOGLE_FORM_URL ?? null;
+
   return (
     <div className="h-[100dvh] bg-primary flex flex-col gap-12 justify-center items-center">
       <div className="flex flex-col gap-2">
@@ -66,8 +68,12 @@ export default function End({
             </button>
           )}
           {/* TODO: Google 설문 href 걸기 */}
-          {isSubmitted && (
-            <a href="" className="btn btn-secondary btn-wide">
+          {isSubmitted && formURL && (
+            <a
+              href={formURL}
+              target="_blank"
+              className="btn btn-secondary btn-wide"
+            >
               후기 참여하고 상품 받기
             </a>
           )}
