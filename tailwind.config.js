@@ -12,7 +12,11 @@ module.exports = {
         ...defaultTheme.fontFamily.sans,
       ],
     },
-    extend: {},
+    extend: {
+      colors: {
+        dark: "#00421A",
+      },
+    },
   },
   daisyui: {
     themes: [
