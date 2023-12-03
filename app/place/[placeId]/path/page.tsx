@@ -1,6 +1,7 @@
 import { AlarmClock, ChevronRight, Compass, Map } from "lucide-react";
 
-import { Path } from "../../../../lib/interfaces";
+import { NEXT_PUBLIC_API_URL } from "@app/constants";
+import { Path } from "@lib/interfaces";
 
 interface CardProps {
   path: Path;
@@ -9,14 +10,13 @@ interface CardProps {
 function Card({ path }: CardProps) {
   const Icon = (function () {
     // FIXME: placeId도 봐야 함
-    switch (path.name) {
-      case "역사를 좋아하는 역사가 타입":
-        return Compass;
-      case "바쁘다 바빠 고대인! 꼭 봐야 할 것만":
-        return AlarmClock;
-      default:
-        return Map;
+    if (path.name.includes("역사")) {
+      return Compass;
     }
+    if (path.name.includes("바빠")) {
+      return AlarmClock;
+    }
+    return Map;
   })();
 
   return (
@@ -38,34 +38,20 @@ function Card({ path }: CardProps) {
   );
 }
 
-export default function Path({
+export default async function Path({
   params: { placeId },
 }: {
   params: { placeId: string };
 }) {
   // TODO: fetch paths from backend based on placeId
-  const PATHS: Path[] = [
-    {
-      id: 0,
-      placeId: parseInt(placeId),
-      name: "역사를 좋아하는 역사가 타입",
-      description: "시간 순으로 따라가자!",
-    },
-    {
-      id: 1,
-      placeId: parseInt(placeId),
-      name: "바쁘다 바빠 고대인! 꼭 봐야 할 것만",
-      description: "최적의 동선으로 관람하자!",
-    },
-  ];
-
+  const paths = await getPaths(placeId);
   return (
     <div className="bg-primary min-h-[100dvh] flex flex-col gap-8 justify-center px-6 my-auto">
       <h1 className="text-center text-secondary font-bold text-xl">
         관람 추천 루트 소개
       </h1>
       <ul className="flex flex-col gap-4 items-center">
-        {PATHS.map((path) => (
+        {paths.map((path) => (
           <li key={path.id} className="w-full">
             <Card path={path} />
           </li>
@@ -73,4 +59,10 @@ export default function Path({
       </ul>
     </div>
   );
+}
+
+async function getPaths(placeId) {
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/${placeId}/path`);
+  const paths: Path[] = await res.json();
+  return paths;
 }

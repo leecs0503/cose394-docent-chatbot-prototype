@@ -1,6 +1,7 @@
 import { MapPin, Pyramid } from "lucide-react";
 
-import { Place } from "../../lib/interfaces";
+import { NEXT_PUBLIC_API_URL } from "@app/constants";
+import { Place } from "@lib/interfaces";
 
 interface CardProps {
   place: Place;
@@ -8,14 +9,13 @@ interface CardProps {
 
 function Card({ place }: CardProps) {
   const Icon = (function () {
-    switch (place.name) {
-      case "고려대학교 박물관":
-        return MapPin;
-      case "고려대학교 캠퍼스 투어":
-        return Pyramid;
-      default:
-        return MapPin;
+    if (place.name.includes("박물관")) {
+      return MapPin;
     }
+    if (place.name.includes("캠퍼스")) {
+      return MapPin;
+    }
+    return MapPin;
   })();
 
   return (
@@ -35,26 +35,13 @@ function Card({ place }: CardProps) {
   );
 }
 
-export default function PlacePage() {
-  // TODO: fetch places from server
-  const PLACES: Place[] = [
-    {
-      id: 0,
-      name: "고려대학교 박물관",
-      description:
-        "고려대학교 박물관은 고려대학교의 역사를 보여주는 박물관입니다.",
-    },
-    {
-      id: 1,
-      name: "고려대학교 캠퍼스 투어",
-      description: "고려대학교의 캠퍼스를 돌아보는 코스입니다.",
-    },
-  ];
-
+export default async function PlacePage() {
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/place`);
+  const places: Place[] = await res.json();
   return (
     <div className="bg-primary min-h-[100dvh] flex justify-center">
       <ul className="flex flex-col gap-8 items-center my-auto">
-        {PLACES.map((place) => (
+        {places.map((place) => (
           <li key={place.id}>
             <Card place={place} />
           </li>

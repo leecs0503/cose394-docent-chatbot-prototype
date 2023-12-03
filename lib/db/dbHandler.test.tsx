@@ -1,7 +1,7 @@
-import {Place, ArtWork, Path, PathPoint} from "../interfaces";
-
 import {BaseDB} from "./db";
 import {DBHandler} from "./dbHandler";
+
+import { Place, ArtWork, Path, PathPoint } from "@lib/interfaces";
 
 interface DummyDBMockedReturnValue{
   get: any[][]
