@@ -17,6 +17,7 @@ import { NEXT_PUBLIC_API_URL } from "@app/constants";
 import { ArtWork, Path } from "@lib/interfaces";
 
 interface BottomSheetProps {
+  placeId: string;
   artwork: ArtWork;
   isShowing: boolean;
   setIsShowing: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,6 +28,7 @@ interface ArtworkInfoProps {
 }
 
 interface AudioPlayerProps {
+  src: string;
   artworkName: ArtWork["name"];
 }
 
@@ -49,7 +51,7 @@ function ArtworkInfo({ isShowing, artwork }: ArtworkInfoProps) {
   );
 }
 
-function AudioPlayer({ artworkName }: AudioPlayerProps) {
+function AudioPlayer({ src, artworkName }: AudioPlayerProps) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const progressBarRef = useRef<HTMLProgressElement>(null);
 
@@ -107,7 +109,7 @@ function AudioPlayer({ artworkName }: AudioPlayerProps) {
     <div className="bg-white rounded-xl shadow p-5 pt-3 flex flex-col gap-2">
       <audio
         ref={audioRef}
-        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3"
+        src={src}
         preload="auto"
       />
       <div className="flex gap-2 text-neutral items-center flex-wrap">
@@ -141,7 +143,7 @@ function AudioPlayer({ artworkName }: AudioPlayerProps) {
   );
 }
 
-function BottomSheet({ artwork, isShowing, setIsShowing }: BottomSheetProps) {
+function BottomSheet({ placeId, artwork, isShowing, setIsShowing }: BottomSheetProps) {
   const onChevronClick = () => {
     setIsShowing((prev) => !prev);
   };
@@ -160,7 +162,7 @@ function BottomSheet({ artwork, isShowing, setIsShowing }: BottomSheetProps) {
         </button>
       </div>
       <ArtworkInfo isShowing={isShowing} artwork={artwork} />
-      <AudioPlayer artworkName={artwork.name} />
+      <AudioPlayer src={`/voices/${placeId}/${artwork.id}.mp3`} artworkName={artwork.name} />
     </div>
   );
 }
@@ -224,6 +226,7 @@ export default function ArtworkDetail({
           </a>
         </div>
         <BottomSheet
+          placeId={placeId}
           artwork={artwork}
           isShowing={isShowing}
           setIsShowing={setIsShowing}
