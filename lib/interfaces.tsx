@@ -16,6 +16,7 @@ export interface Path {
   id: number;
   placeId: number;
   name: string;
+  description: string
 };
 
 export interface PathPoint {

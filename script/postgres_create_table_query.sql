@@ -13,9 +13,10 @@ CREATE TABLE art_work (
 );
 
 CREATE TABLE path (
-    id       SERIAL       NOT NULL,
-    place_id INT          NOT NULL,
-    name     VARCHAR(255) NOT NULL,
+    id          SERIAL       NOT NULL,
+    place_id    INT          NOT NULL,
+    name        VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL DEFAULT '',
     PRIMARY KEY (id, place_id)
 );
 
