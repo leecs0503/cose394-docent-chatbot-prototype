@@ -102,6 +102,7 @@ function AudioPlayer({ artworkName }: AudioPlayerProps) {
   return (
     <div className="bg-white rounded-xl shadow p-5 pt-3 flex flex-col gap-2">
       <audio
+        autoPlay
         ref={audioRef}
         src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3"
         preload="auto"
