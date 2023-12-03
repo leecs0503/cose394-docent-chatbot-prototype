@@ -8,3 +8,6 @@ export const DB_USER = process.env.DB_USER || "";
 export const DB_PASSWORD = process.env.DB_PASSWORD || "";
 export const DB_NAME = process.env.DB_NAME || "";
 export const DB_SSL = process.env.DB_SSL == "true";
+
+// Google Forms
+export const GOOGLE_FORM_URL = process.env.NEXT_PUBLIC_GOOGLE_FORM_URL || "";
