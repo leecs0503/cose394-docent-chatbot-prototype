@@ -194,7 +194,10 @@ export default function ArtworkDetail({
             href={`/place/${placeId}/path/${pathId}/${
               parseInt(artworkIndex) - 1
             }`}
-            className="btn btn-sm btn-circle absolute bg-opacity-80 border-opacity-80 text-neutral/80 left-0 ml-8"
+            className={[
+              "btn btn-sm btn-circle absolute bg-opacity-80 border-opacity-80 text-neutral/80 left-0 ml-8",
+              isShowing && "opacity-0",
+            ].join(" ")}
           >
             <ChevronLeft />
           </a>
@@ -202,7 +205,10 @@ export default function ArtworkDetail({
             href={`/place/${placeId}/path/${pathId}/${
               parseInt(artworkIndex) + 1
             }`}
-            className="btn btn-sm btn-circle absolute bg-opacity-80 border-opacity-80 text-neutral/80 right-0 mr-8"
+            className={[
+              "btn btn-sm btn-circle absolute bg-opacity-80 border-opacity-80 text-neutral/80 right-0 mr-8",
+              isShowing && "opacity-0",
+            ].join(" ")}
           >
             <ChevronRight />
           </a>
