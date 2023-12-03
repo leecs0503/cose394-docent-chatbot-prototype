@@ -67,7 +67,7 @@ export default function OnBoard() {
 
   return (
     <>
-      <div className="fixed inset-0 z-10 font-[museum] bg-dark flex items-center justify-center flex-col text-white animate-fadeout">
+      <div className="fixed pointer-events-none inset-0 z-10 font-[museum] bg-dark flex items-center justify-center flex-col text-white animate-fadeout">
         <div className="text-[15px] font-light">내 손 안의 도슨트,</div>
         <div className="font-bold text-[50px]">DoSonT</div>
       </div>
