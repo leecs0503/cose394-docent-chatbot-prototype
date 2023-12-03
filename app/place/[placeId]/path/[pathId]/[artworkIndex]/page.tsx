@@ -2,6 +2,8 @@
 
 import {
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   ChevronUp,
   Headphones,
   Loader2,
@@ -176,7 +178,7 @@ export default function ArtworkDetail({
 
   return (
     <div className="h-[100dvh] flex items-center bg-cover bg-center bg-[url(https://source.unsplash.com/random)]">
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full backdrop-blur-lg bg-secondary/50 p-4 pb-48">
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full backdrop-blur-lg bg-secondary/50 p-4 pb-56">
         {/* TODO: proper alt text */}
         <div className="object-contain h-full w-full flex items-center">
           <img
@@ -187,6 +189,22 @@ export default function ArtworkDetail({
               isShowing && "opacity-0",
             ].join(" ")}
           />
+          <a
+            href={`/place/${placeId}/path/${pathId}/${
+              parseInt(artworkIndex) - 1
+            }`}
+            className="btn btn-sm btn-circle absolute bg-opacity-80 border-opacity-80 text-neutral/80 left-0 ml-8"
+          >
+            <ChevronLeft />
+          </a>
+          <a
+            href={`/place/${placeId}/path/${pathId}/${
+              parseInt(artworkIndex) + 1
+            }`}
+            className="btn btn-sm btn-circle absolute bg-opacity-80 border-opacity-80 text-neutral/80 right-0 mr-8"
+          >
+            <ChevronRight />
+          </a>
         </div>
         <BottomSheet
           artwork={ARTWORK}
