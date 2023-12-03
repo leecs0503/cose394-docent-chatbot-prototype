@@ -44,7 +44,7 @@ export default async function PlaceDetail({
 }
 
 async function getPlace(placeId: string): Promise<Place | null> {
-  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/place`);
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/place`, {cache: "no-cache"});
   const places: Place[] = await res.json();
   // TODO: 별도 API 파기
   let place = null;

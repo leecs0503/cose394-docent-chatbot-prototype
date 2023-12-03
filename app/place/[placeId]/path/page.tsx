@@ -62,7 +62,7 @@ export default async function Path({
 }
 
 async function getPaths(placeId) {
-  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/${placeId}/path`);
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/${placeId}/path`, {cache: "no-cache"});
   const paths: Path[] = await res.json();
   return paths;
 }
