@@ -13,7 +13,8 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import { ArtWork } from "@lib/interfaces";
+import { NEXT_PUBLIC_API_URL } from "@app/constants";
+import { ArtWork, Path } from "@lib/interfaces";
 
 interface BottomSheetProps {
   artwork: ArtWork;
@@ -36,9 +37,9 @@ function ArtworkInfo({ isShowing, artwork }: ArtworkInfoProps) {
         <div className="flex flex-col gap-2">
           <h1 className="text-center font-bold text-neutral">{artwork.name}</h1>
           <p className="text-center font-semibold text-neutral/70 text-sm">
-            {artwork.description}
+            {artwork.summary}
           </p>
-          <p className="text-neutral/90">{artwork.summary}</p>
+          <p className="text-neutral/90">{artwork.description}</p>
         </div>
       )}
       {isShowing === false && (
@@ -165,37 +166,46 @@ function BottomSheet({ artwork, isShowing, setIsShowing }: BottomSheetProps) {
 }
 
 export default function ArtworkDetail({
-  params: { placeId, pathId, artworkIndex },
+  params: { placeId, pathId, pathIdx },
 }: {
-  params: { placeId: string; pathId: string; artworkIndex: string };
+  params: { placeId: string; pathId: string; pathIdx: string };
 }) {
   const [isShowing, setIsShowing] = useState(false);
+  const [infos, setInfos] = useState({
+    isLoading: true,
+    isFail: false,
+    artwork: null,
+    previousPathIdx: null,
+    nxtPathIdx: null,
+  });
+  useEffect(() => {
+    getInfos(placeId, pathId, parseInt(pathIdx)).then(setInfos);
+  }, []);
 
-  const ARTWORK: ArtWork = {
-    name: "그림",
-    description: "그림 설명",
-    id: 0,
-    placeId: parseInt(placeId),
-    summary: "그림 요약",
-  };
+  const { isLoading, isFail, artwork, previousPathIdx, nxtPathIdx } = infos;
 
+  if (isLoading) {
+    return <div> loading.. </div>;
+  }
+  if (isFail) {
+    return <div> fail </div>;
+  }
+  // TODO: 배경도 작품 이미지로 변경
   return (
     <div className="h-[100dvh] flex items-center bg-cover bg-center bg-[url(https://source.unsplash.com/random)]">
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full backdrop-blur-lg bg-secondary/50 p-4 pb-56">
         {/* TODO: proper alt text */}
         <div className="object-contain h-full w-full flex items-center">
           <img
-            src="https://source.unsplash.com/random"
-            alt={`Artwork ${artworkIndex}`}
+            src={`/images/artworks/${placeId}/작품${`${artwork.id}`.padStart(2, '0')}.png`}
+            alt={`Artwork ${artwork.id}`}
             className={[
               "rounded-xl shadow-lg transition-opacity",
               isShowing && "opacity-0",
             ].join(" ")}
           />
           <a
-            href={`/place/${placeId}/path/${pathId}/${
-              parseInt(artworkIndex) - 1
-            }`}
+            href={`/place/${placeId}/path/${pathId}/${previousPathIdx}`}
             className={[
               "btn btn-sm btn-circle absolute bg-opacity-80 border-opacity-80 text-neutral/80 left-0 ml-8",
               isShowing && "opacity-0",
@@ -204,9 +214,7 @@ export default function ArtworkDetail({
             <ChevronLeft />
           </a>
           <a
-            href={`/place/${placeId}/path/${pathId}/${
-              parseInt(artworkIndex) + 1
-            }`}
+            href={`/place/${placeId}/path/${pathId}/${nxtPathIdx}`}
             className={[
               "btn btn-sm btn-circle absolute bg-opacity-80 border-opacity-80 text-neutral/80 right-0 mr-8",
               isShowing && "opacity-0",
@@ -216,11 +224,61 @@ export default function ArtworkDetail({
           </a>
         </div>
         <BottomSheet
-          artwork={ARTWORK}
+          artwork={artwork}
           isShowing={isShowing}
           setIsShowing={setIsShowing}
         />
       </div>
     </div>
   );
+}
+
+const FAIL_INFO = {
+  isLoading: false,
+  isFail: true,
+  artwork: null,
+  previousPathIdx: null,
+  nxtPathIdx: null,
+};
+
+async function getInfos(placeId, pathId, pathIdx: number) {
+  const pathPoints = await getPathPoints(placeId, pathId);
+  const artworks = await getArtworks(placeId, pathId);
+  if (isNaN(pathIdx) || pathIdx < 0 || pathIdx >= pathPoints.length) {
+    return FAIL_INFO;
+  }
+  const artworkId = pathPoints[pathIdx].id;
+  let artwork = null;
+  for (const artworkInstance of artworks) {
+    if (artworkInstance.id == artworkId) {
+      artwork = artworkInstance;
+    }
+  }
+  if (artwork == null) {
+    return FAIL_INFO;
+  }
+  return {
+    isLoading: false,
+    isFail: false,
+    artwork,
+    previousPathIdx: Math.max(0, pathIdx - 1),
+    nxtPathIdx: Math.max(0, Math.min(pathPoints.length - 1, pathIdx + 1)),
+  };
+}
+
+async function getPathPoints(placeId, pathId) {
+  const res = await fetch(
+    `${NEXT_PUBLIC_API_URL}/api/${placeId}/path/${pathId}`,
+    { cache: "no-cache" }
+  );
+  const paths: Path[] = await res.json();
+  return paths;
+}
+
+async function getArtworks(placeId, pathId) {
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/${placeId}/artwork`, {
+    cache: "no-cache",
+  });
+  const artworks: ArtWork[] = await res.json();
+  return artworks;
 }
