@@ -10,6 +10,7 @@ export class PostgresSqlDB extends BaseDB {
     dbUser: string,
     dbPassword: string,
     dbName: string,
+    dbSSL: boolean,
   ) {
     super();
     this.db = pgPromise()({
@@ -18,6 +19,7 @@ export class PostgresSqlDB extends BaseDB {
       user: dbUser,
       password: dbPassword,
       database: dbName,
+      ssl: dbSSL,
     });
   }
 

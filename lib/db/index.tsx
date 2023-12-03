@@ -3,6 +3,7 @@ import {
     DB_USER,
     DB_PASSWORD,
     DB_NAME,
+    DB_SSL,
 } from "../constants";
 
 import {DBHandler} from "./dbHandler";
@@ -22,6 +23,7 @@ const postgresSqlDB = new PostgresSqlDB(
     DB_USER,
     DB_PASSWORD,
     DB_NAME,
+    DB_SSL,
 );
 
 export const dbHandler = new DBHandler(postgresSqlDB);
