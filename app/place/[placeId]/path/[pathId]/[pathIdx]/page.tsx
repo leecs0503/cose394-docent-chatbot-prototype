@@ -34,18 +34,22 @@ interface AudioPlayerProps {
 
 function ArtworkInfo({ isShowing, artwork }: ArtworkInfoProps) {
   return (
-    <div className="bg-white rounded-xl shadow p-5 pt-7 flex flex-col gap-4">
+    <div className="bg-white rounded-xl shadow pt-7 flex flex-col gap-4 overflow-hidden">
       {isShowing === true && (
-        <div className="flex flex-col gap-2">
-          <h1 className="text-center font-bold text-neutral">{artwork.name}</h1>
-          <p className="text-center font-semibold text-neutral/70 text-sm">
+        <div className="flex flex-col gap-2 break-keep">
+          <h1 className="text-center font-bold text-neutral px-5">
+            {artwork.name}
+          </h1>
+          <p className="text-center font-semibold text-neutral/70 text-sm px-5">
             {artwork.summary}
           </p>
-          <p className="text-neutral/90">{artwork.description}</p>
+          <div className="max-h-[50dvh] overflow-y-auto">
+            <p className="text-neutral/90 px-5 pb-5">{artwork.description}</p>
+          </div>
         </div>
       )}
       {isShowing === false && (
-        <h1 className="text-center font-bold">도슨트 읽기</h1>
+        <h1 className="text-center font-bold px-5 pb-5">도슨트 읽기</h1>
       )}
     </div>
   );
