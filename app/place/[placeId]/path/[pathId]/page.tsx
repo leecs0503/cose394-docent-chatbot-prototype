@@ -17,6 +17,8 @@ interface BreadCrumbsProps {
 
 interface BottomSheetProps {
   route: string[];
+  placeId: string;
+  pathId: string;
 }
 
 interface PathPointProps {
@@ -57,15 +59,17 @@ function BreadCrumbs({ active, route }: BreadCrumbsProps) {
   );
 }
 
-function BottomSheet({ route }: BottomSheetProps) {
+function BottomSheet({ route, placeId, pathId }: BottomSheetProps) {
   return (
     <div className="bg-white rounded-t-xl shadow p-4 flex flex-col gap-4 absolute bottom-0 left-0 right-0">
       <div className="flex flex-col gap-4 p-2">
         <h1 className="font-bold text-lg">[바쁘다 바빠 고대인!] 루트</h1>
         <BreadCrumbs active={0} route={route} />
       </div>
-      {/* TODO: href 걸기 */}
-      <a href={null} className="btn btn-primary">
+      <a
+        href={`/place/${placeId}/path/${pathId}/0`}
+        className="btn btn-primary"
+      >
         관람 시작하기
       </a>
     </div>
@@ -138,9 +142,9 @@ function InteractiveMap({
 }
 
 export default function Path({
-  params: { pathId },
+  params: { placeId, pathId },
 }: {
-  params: { pathId: string };
+  params: { placeId: string; pathId: string };
 }) {
   // TODO: 루트 정보와 pathpoints 받아오기
   const ROUTE = [
@@ -181,7 +185,7 @@ export default function Path({
           pathPoints={PATHPOINTS}
           backgroundColor={BACKGROUND_COLOR}
         />
-        <BottomSheet route={ROUTE} />
+        <BottomSheet route={ROUTE} placeId={placeId} pathId={pathId} />
       </div>
       <button
         onClick={onBackClick}
