@@ -8,6 +8,12 @@ node=^18.18.0
 ```
 cat <<EOF >> .env
 OPENAI_API_KEY=${OPENAI_API_KEY}
+DB_HOST=${DB_HOST}
+DB_USER=${DB_USER}
+DB_PASSWORD=${DB_PASSWORD}
+DB_NAME=${DB_NAME}
+DB_SSL=false
+NEXT_PUBLIC_API_URL="http://localhost:3000"
 EOF
 ```
 ## Install
