@@ -242,8 +242,10 @@ const FAIL_INFO = {
 };
 
 async function getInfos(placeId, pathId, pathIdx: number) {
-  const pathPoints = await getPathPoints(placeId, pathId);
-  const artworks = await getArtworks(placeId, pathId);
+  const promise1 = getPathPoints(placeId, pathId);
+  const promise2 = getArtworks(placeId, pathId);
+  const pathPoints = await promise1;
+  const artworks = await promise2;
   if (isNaN(pathIdx) || pathIdx < 0 || pathIdx >= pathPoints.length) {
     return FAIL_INFO;
   }
