@@ -26,8 +26,12 @@ export class PostgresSqlDB extends BaseDB {
     sql: string,
     args: any[],
   ) {
-      const result = await this.db.query(sql, args);
-      return result[0];
+      const result = await this.db.any({
+        text: sql,
+        values: args,
+        rowMode: 'array'
+      });
+      return result;
   }
 }
 
@@ -35,7 +39,7 @@ function sqlTransform(target: any, key: string, descriptor: PropertyDescriptor) 
   const fn = descriptor.value!;
 
   descriptor.value = async function (sql: string, args: any[]) {
-    return await fn.call(this, [convertQuery(sql), args]);
+    return await fn.call(this, convertQuery(sql), args);
   };
 }
 
