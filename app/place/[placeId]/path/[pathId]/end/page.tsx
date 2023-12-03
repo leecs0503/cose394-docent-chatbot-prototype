@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Rating } from "react-simple-star-rating";
 
-import { GOOGLE_FORM_URL } from "@lib/constants";
+import { GOOGLE_FORM_URL } from "@app/constants";
 
 export default function End({
   params: { placeId, pathId, artworkIndex },
