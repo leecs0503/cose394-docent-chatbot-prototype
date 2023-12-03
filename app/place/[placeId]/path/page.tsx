@@ -1,7 +1,7 @@
 import { AlarmClock, ChevronRight, Compass, Map } from "lucide-react";
 
-import { Path } from "../../../../lib/interfaces";
-import {NEXT_PUBLIC_API_URL} from "../../../constants";
+import { NEXT_PUBLIC_API_URL } from "@app/constants";
+import { Path } from "@lib/interfaces";
 
 interface CardProps {
   path: Path;

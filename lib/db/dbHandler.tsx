@@ -1,6 +1,7 @@
-import {Place, ArtWork, Path, PathPoint} from "../interfaces";
-
 import {BaseDB} from "./db";
+
+import {Place, ArtWork, Path, PathPoint} from "@lib/interfaces";
+
 
 export class DBHandler {
     constructor(private db: BaseDB) {}

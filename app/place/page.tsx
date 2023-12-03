@@ -1,7 +1,7 @@
 import { MapPin, Pyramid } from "lucide-react";
 
-import { Place } from "../../lib/interfaces";
-import {NEXT_PUBLIC_API_URL} from "../constants";
+import { NEXT_PUBLIC_API_URL } from "@app/constants";
+import { Place } from "@lib/interfaces";
 
 interface CardProps {
   place: Place;

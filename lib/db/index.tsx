@@ -1,14 +1,14 @@
+import {DBHandler} from "./dbHandler";
+import { PostgresSqlDB } from "./postgresSqlDb";
+// import {MysqlDB} from "./mysqlDb";
+
 import {
     DB_HOST,
     DB_USER,
     DB_PASSWORD,
     DB_NAME,
     DB_SSL,
-} from "../constants";
-
-import {DBHandler} from "./dbHandler";
-import { PostgresSqlDB } from "./postgresSqlDb";
-// import {MysqlDB} from "./mysqlDb";
+} from "@lib/constants";
 
 // const mysqlDB = new MysqlDB(
 //     DB_HOST,

@@ -9,8 +9,8 @@ import {
   TransformWrapper,
 } from "react-zoom-pan-pinch";
 
-import { PathPoint } from "../../../../../lib/interfaces";
-import {NEXT_PUBLIC_API_URL} from "../../../../constants";
+import { NEXT_PUBLIC_API_URL } from "@app/constants";
+import { PathPoint } from "@lib/interfaces";
 
 interface BreadCrumbsProps {
   route: string[];
