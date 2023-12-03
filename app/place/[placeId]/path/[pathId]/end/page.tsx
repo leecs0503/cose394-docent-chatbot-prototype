@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Rating } from "react-simple-star-rating";
 
+import { GOOGLE_FORM_URL } from "@app/constants";
+
 export default function End({
   params: { placeId, pathId, artworkIndex },
 }: {
@@ -67,7 +69,11 @@ export default function End({
           )}
           {/* TODO: Google 설문 href 걸기 */}
           {isSubmitted && (
-            <a href="" className="btn btn-secondary btn-wide">
+            <a
+              href={GOOGLE_FORM_URL}
+              target="_blank"
+              className="btn btn-secondary btn-wide"
+            >
               후기 참여하고 상품 받기
             </a>
           )}
