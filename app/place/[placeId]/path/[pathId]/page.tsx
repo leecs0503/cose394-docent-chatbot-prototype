@@ -2,6 +2,7 @@
 
 import { ArrowLeft, MapPin } from "lucide-react";
 import { useRouter } from "next/navigation";
+import React, { useState } from 'react';
 import {
   KeepScale,
   TransformComponent,
@@ -9,6 +10,7 @@ import {
 } from "react-zoom-pan-pinch";
 
 import { PathPoint } from "../../../../../lib/interfaces";
+import {NEXT_PUBLIC_API_URL} from "../../../../constants";
 
 interface BreadCrumbsProps {
   route: string[];
@@ -138,9 +140,9 @@ function InteractiveMap({
 }
 
 export default function Path({
-  params: { pathId },
+  params: { placeId, pathId },
 }: {
-  params: { pathId: string };
+  params: { placeId: string, pathId: string };
 }) {
   // TODO: 루트 정보와 pathpoints 받아오기
   const ROUTE = [
@@ -148,21 +150,13 @@ export default function Path({
     "고미술전시실 출구 오른쪽 에스컬레이터를 타시면 3층 현대미술관이 나옵니다.",
     "3층 현대미술전시실",
   ];
+  const [isLoading, setIsLoading] = useState(true);
+  const [pathPoints, setPathPoints] = useState([]);
 
-  const PATHPOINTS = [
-    {
-      id: 0,
-      pathId: parseInt(pathId),
-      x: 140,
-      y: 406,
-    },
-    {
-      id: 1,
-      pathId: parseInt(pathId),
-      x: 487,
-      y: 82,
-    },
-  ];
+  getPathPoints(placeId, pathId).then((res) => {
+    setPathPoints(res);
+    setIsLoading(false);
+  });
 
   const BACKGROUND_COLOR = "#EEEEEE";
 
@@ -172,13 +166,18 @@ export default function Path({
     router.back();
   };
 
+  if (isLoading) {
+    // FIXME: 적절한 로딩으로 수정
+    return <div>loading</div>;
+  }
+
   return (
     <div>
       <div className={`h-[100dvh]`}>
         <InteractiveMap
           mapImagePath="/maps/test_map.svg"
           mapImageAlt="테스트 지도"
-          pathPoints={PATHPOINTS}
+          pathPoints={pathPoints}
           backgroundColor={BACKGROUND_COLOR}
         />
         <BottomSheet route={ROUTE} />
@@ -191,4 +190,10 @@ export default function Path({
       </button>
     </div>
   );
+}
+
+async function getPathPoints(placeId, pathId) {
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/${placeId}/path/${pathId}`);
+  const paths: PathPoint[] = await res.json();
+  return paths;
 }
