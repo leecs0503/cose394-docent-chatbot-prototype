@@ -4,10 +4,12 @@ import {
   ChevronDown,
   ChevronUp,
   Headphones,
+  Loader2,
+  Pause,
   Play,
-  RotateCcw,
+  Rewind,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { ArtWork } from "../../../../../../lib/interfaces";
 
@@ -45,21 +47,90 @@ function ArtworkInfo({ isShowing, artwork }: ArtworkInfoProps) {
 }
 
 function AudioPlayer({ artworkName }: AudioPlayerProps) {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const progressBarRef = useRef<HTMLProgressElement>(null);
+
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const PlaybackIcon = isLoading ? Loader2 : isPlaying ? Pause : Play;
+  const RewindIcon = isLoading ? Loader2 : Rewind;
+
+  useEffect(() => {
+    if (audioRef.current) {
+      setIsLoading(false);
+      if (progressBarRef.current) {
+        progressBarRef.current.value = 0;
+      }
+
+      audioRef.current.addEventListener("play", () => {
+        setIsPlaying(true);
+      });
+
+      audioRef.current.addEventListener("pause", () => {
+        setIsPlaying(false);
+      });
+
+      audioRef.current.addEventListener("timeupdate", () => {
+        const { currentTime, duration } = audioRef.current;
+        const progress = (currentTime / duration) * 100;
+
+        if (progressBarRef.current) {
+          progressBarRef.current.value = progress;
+        }
+      });
+    }
+  }, []);
+
+  const onRewindClick = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime -= 5;
+    }
+  };
+
+  const onPlaybackActionClick = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+    }
+  };
+
   return (
-    <div className="bg-white rounded-xl shadow p-5 flex flex-col gap-4">
+    <div className="bg-white rounded-xl shadow p-5 pt-3 flex flex-col gap-2">
       <audio
+        ref={audioRef}
         src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3"
         preload="auto"
       />
-      <div className="flex gap-2 text-neutral items-center">
+      <div className="flex gap-2 text-neutral items-center flex-wrap">
         <Headphones className="shrink-0" size={18} strokeWidth={2.5} />
-        <div className="mr-auto font-bold text-sm">{artworkName} 가이드</div>
-        <div className="flex gap-4">
-          <RotateCcw size={22} className="shrink-0" />
-          <Play size={22} className="shrink-0" />
+        <div className="font-bold text-sm">{artworkName} 가이드</div>
+        <div className="flex gap-0.5 ml-auto translate-x-2.5">
+          {isPlaying && isLoading === false && (
+            <button
+              onClick={onRewindClick}
+              className="btn btn-ghost p-2 aspect-square shrink-0"
+            >
+              <RewindIcon
+                className={isLoading ? "animate-spin opacity-50" : ""}
+              />
+            </button>
+          )}
+          <button
+            onClick={onPlaybackActionClick}
+            className="btn btn-ghost p-2 aspect-square shrink-0"
+          >
+            <PlaybackIcon className={isLoading && "animate-spin opacity-50"} />
+          </button>
         </div>
       </div>
-      <progress max={100} className="progress progress-primary h-1" />
+      <progress
+        max={100}
+        ref={progressBarRef}
+        className="progress progress-primary h-1"
+      />
     </div>
   );
 }
@@ -104,8 +175,8 @@ export default function ArtworkDetail({
   };
 
   return (
-    <div className="h-[100dvh] flex items-center p-8 bg-cover bg-center bg-[url(https://source.unsplash.com/random)]">
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full backdrop-blur-lg bg-secondary/50 p-8 pb-48">
+    <div className="h-[100dvh] flex items-center bg-cover bg-center bg-[url(https://source.unsplash.com/random)]">
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full backdrop-blur-lg bg-secondary/50 p-4 pb-48">
         {/* TODO: proper alt text */}
         <div className="object-contain h-full w-full flex items-center">
           <img
