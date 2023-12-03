@@ -5,11 +5,12 @@ CREATE TABLE place (
 );
 
 CREATE TABLE art_work (
-    id          SERIAL       PRIMARY KEY,
+    id          SERIAL,
     place_id    INT          NOT NULL,
     name        VARCHAR(255) NOT NULL,
     summary     TEXT,
-    description TEXT
+    description TEXT,
+    PRIMARY KEY (id, place_id)
 );
 
 CREATE TABLE path (
