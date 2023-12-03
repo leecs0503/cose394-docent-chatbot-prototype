@@ -1,6 +1,12 @@
 "use client";
 
-import { ChevronDown, ChevronUp } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Headphones,
+  Play,
+  RotateCcw,
+} from "lucide-react";
 import { useState } from "react";
 
 import { ArtWork } from "../../../../../../lib/interfaces";
@@ -13,6 +19,10 @@ interface BottomSheetProps {
 interface ArtworkInfoProps {
   isShowing: boolean;
   artwork: ArtWork;
+}
+
+interface AudioPlayerProps {
+  artworkName: ArtWork["name"];
 }
 
 function ArtworkInfo({ isShowing, artwork }: ArtworkInfoProps) {
@@ -34,9 +44,23 @@ function ArtworkInfo({ isShowing, artwork }: ArtworkInfoProps) {
   );
 }
 
-function AudioPlayer() {
+function AudioPlayer({ artworkName }: AudioPlayerProps) {
   return (
-    <div className="bg-white rounded-xl shadow p-5 flex flex-col">오디오</div>
+    <div className="bg-white rounded-xl shadow p-5 flex flex-col gap-4">
+      <audio
+        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3"
+        preload="auto"
+      />
+      <div className="flex gap-2 text-neutral items-center">
+        <Headphones className="shrink-0" size={18} strokeWidth={2.5} />
+        <div className="mr-auto font-bold text-sm">{artworkName} 가이드</div>
+        <div className="flex gap-4">
+          <RotateCcw size={22} className="shrink-0" />
+          <Play size={22} className="shrink-0" />
+        </div>
+      </div>
+      <progress max={100} className="progress progress-primary h-1" />
+    </div>
   );
 }
 
@@ -59,7 +83,7 @@ function BottomSheet({ artwork, isShowing, setIsShowing }: BottomSheetProps) {
         </button>
       </div>
       <ArtworkInfo isShowing={isShowing} artwork={artwork} />
-      <AudioPlayer />
+      <AudioPlayer artworkName={artwork.name} />
     </div>
   );
 }
