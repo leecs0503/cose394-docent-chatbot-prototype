@@ -196,7 +196,7 @@ export default function ArtworkDetail({
         {/* TODO: proper alt text */}
         <div className="object-contain h-full w-full flex items-center">
           <img
-            src="https://source.unsplash.com/random"
+            src={`/images/artworks/${placeId}/작품${`${artwork.id}`.padStart(2, '0')}.png`}
             alt={`Artwork ${artwork.id}`}
             className={[
               "rounded-xl shadow-lg transition-opacity",
