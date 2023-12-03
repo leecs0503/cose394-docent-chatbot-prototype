@@ -37,9 +37,9 @@ function ArtworkInfo({ isShowing, artwork }: ArtworkInfoProps) {
         <div className="flex flex-col gap-2">
           <h1 className="text-center font-bold text-neutral">{artwork.name}</h1>
           <p className="text-center font-semibold text-neutral/70 text-sm">
-            {artwork.description}
+            {artwork.summary}
           </p>
-          <p className="text-neutral/90">{artwork.summary}</p>
+          <p className="text-neutral/90">{artwork.description}</p>
         </div>
       )}
       {isShowing === false && (
@@ -170,7 +170,6 @@ export default function ArtworkDetail({
 }: {
   params: { placeId: string; pathId: string; pathIdx: string };
 }) {
-
   const [isShowing, setIsShowing] = useState(false);
   const [infos, setInfos] = useState({
     isLoading: true,
@@ -179,11 +178,11 @@ export default function ArtworkDetail({
     previousPathIdx: null,
     nxtPathIdx: null,
   });
-  useEffect(()=>{
+  useEffect(() => {
     getInfos(placeId, pathId, parseInt(pathIdx)).then(setInfos);
   }, []);
 
-  const {isLoading, isFail, artwork ,previousPathIdx ,nxtPathIdx} = infos;
+  const { isLoading, isFail, artwork, previousPathIdx, nxtPathIdx } = infos;
 
   if (isLoading) {
     return <div> loading.. </div>;
@@ -267,13 +266,18 @@ async function getInfos(placeId, pathId, pathIdx: number) {
 }
 
 async function getPathPoints(placeId, pathId) {
-  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/${placeId}/path/${pathId}`, {cache: "no-cache"});
+  const res = await fetch(
+    `${NEXT_PUBLIC_API_URL}/api/${placeId}/path/${pathId}`,
+    { cache: "no-cache" }
+  );
   const paths: Path[] = await res.json();
   return paths;
 }
 
 async function getArtworks(placeId, pathId) {
-  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/${placeId}/artwork`, {cache: "no-cache"});
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/${placeId}/artwork`, {
+    cache: "no-cache",
+  });
   const artworks: ArtWork[] = await res.json();
   return artworks;
 }
