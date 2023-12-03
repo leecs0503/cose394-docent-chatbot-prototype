@@ -1,5 +1,6 @@
 "use client";
 
+import { GOOGLE_FORM_URL } from "@lib/constants";
 import { useState } from "react";
 import { Rating } from "react-simple-star-rating";
 
@@ -28,8 +29,6 @@ export default function End({
 
     setIsSubmitted(true);
   };
-
-  const formURL = process.env.NEXT_PUBLIC_GOOGLE_FORM_URL ?? null;
 
   return (
     <div className="h-[100dvh] bg-primary flex flex-col gap-12 justify-center items-center">
@@ -68,9 +67,9 @@ export default function End({
             </button>
           )}
           {/* TODO: Google 설문 href 걸기 */}
-          {isSubmitted && formURL && (
+          {isSubmitted && (
             <a
-              href={formURL}
+              href={GOOGLE_FORM_URL}
               target="_blank"
               className="btn btn-secondary btn-wide"
             >
