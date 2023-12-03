@@ -1,8 +1,8 @@
-import { OPENAI_API_KEY, OPENAI_MODEL_VERSION } from "../constants";
-
 import { ChatBot } from "./chatBot";
 import { DummyModel } from "./model/dummyModel";
 import { StreamOpenAIModel } from "./model/openAiModel" ;
+
+import { OPENAI_API_KEY, OPENAI_MODEL_VERSION } from "@lib/constants";
 
 const openAiModel = new StreamOpenAIModel(OPENAI_API_KEY, OPENAI_MODEL_VERSION);
 // const dummyModel = new DummyModel();

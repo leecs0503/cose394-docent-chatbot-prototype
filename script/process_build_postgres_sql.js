@@ -52,8 +52,9 @@ const processPlace = async(placeName) => {
     // 4. accumulate placeID.
 
     const placePath = `${ROOT_PATH}/${placeName}`;
+    const placeDescription = await ReadFile(`${placePath}/설명.txt`);
     // 1. build place table query.
-    const placeResult = await processPlaceQuery(placeName);
+    const placeResult = await processPlaceQuery(placeName, placeDescription);
     // 2. build artwork table query.
     const artworkResult = await processArtwork(placePath);
     // 3. build path, path_point table query.
@@ -71,10 +72,10 @@ const processPlace = async(placeName) => {
     ];
 };
 
-const processPlaceQuery = async (placeName) => {
+const processPlaceQuery = async (placeName, placeDescription) => {
     const placeData = {
-        key: ["id", "name"],
-        values: [[placeID, placeName]],
+        key: ["id", "name", "description"],
+        values: [[placeID, placeName, placeDescription]],
     };
     const placeResult = InsertQueryOf(TABLE_NAME_PLACE, placeData);
     return [placeResult];
@@ -104,8 +105,10 @@ const processPaths = async (placePath) => {
             continue;
         }
         const filePath = `${placePath}/${fileName}`;
+        const pathName = await ReadFile(filePath.replace(".xlsx", "이름.txt"));
+        const pathDescription = await ReadFile(filePath.replace(".xlsx", "설명.txt"));
         // 1. process path sql
-        const pathResult = await ProcessPath(pathID, fileName.replace(".xlsx", ""));
+        const pathResult = await ProcessPath(pathID, pathName, pathDescription);
 
         // 2. process path sql
         const pathPointResult = await ProcessPathPoint(filePath);
@@ -119,10 +122,10 @@ const processPaths = async (placePath) => {
     return result;
 };
 
-const ProcessPath = async (pathID, name) => {
+const ProcessPath = async (pathID, name, pathDescription) => {
     const data = {
-        key: ["id", "place_id", "name"],
-        values: [[pathID, placeID, name]],
+        key: ["id", "place_id", "name", "description"],
+        values: [[pathID, placeID, name, pathDescription]],
     };
     return [InsertQueryOf(TABLE_NAME_PATH, data)];
 };
@@ -146,10 +149,15 @@ const ReadExcel = async (path) => {
     };
 };
 
+const ReadFile = async (path) => {
+    data = await fs.readFile(path);
+    return String(data);
+};
+
 const InsertQueryOf = (tableName, data) => {
     const keyQuery = `(${data.key.join(", ")})`;
     const valuesQuery = data.values.map(value => `(${value.map(
-        x=>(isNaN(x))?`'${x}'`:x
+        x=>(isNaN(x))?`E'${x.replaceAll("'", "''").replaceAll("\n", "\\n")}'`:x
     ).join(", ")})`).join(",\n              ");
     return `INSERT INTO ${tableName} ${keyQuery}
        VALUES ${valuesQuery};`;

@@ -1,4 +1,5 @@
-import { Place } from "../../../lib/interfaces";
+import { NEXT_PUBLIC_API_URL } from "@app/constants";
+import { Place } from "@lib/interfaces";
 
 interface PlaceInfoProps {
   place: Place;
@@ -29,17 +30,28 @@ function PlaceInfo({ place }: PlaceInfoProps) {
   );
 }
 
-export default function PlaceDetail({
+
+export default async function PlaceDetail({
   params: { placeId },
 }: {
   params: { placeId: string };
 }) {
-  const PLACE: Place = {
-    id: parseInt(placeId),
-    name: "고려대학교 박물관",
-    description:
-      "고려대학교 박물관은 고려대학교의 역사를 보여주는 박물관입니다.",
-  };
+  const place = await getPlace(placeId);
+  if (place == null) {
+    return <div>not found</div>;
+  }
+  return <PlaceInfo place={place} />;
+}
 
-  return <PlaceInfo place={PLACE} />;
+async function getPlace(placeId: string): Promise<Place | null> {
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/place`, {cache: "no-cache"});
+  const places: Place[] = await res.json();
+  // TODO: 별도 API 파기
+  let place = null;
+  for (const placeInstance of places) {
+    if (placeInstance.id === Number(placeId)) {
+      place = placeInstance;
+    }
+  }
+  return place;
 }
