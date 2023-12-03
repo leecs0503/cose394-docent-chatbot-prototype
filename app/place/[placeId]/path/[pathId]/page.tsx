@@ -17,7 +17,6 @@ interface BreadCrumbsProps {
 
 interface BottomSheetProps {
   route: string[];
-  backgroundColor: string;
 }
 
 interface PathPointProps {
@@ -58,7 +57,7 @@ function BreadCrumbs({ active, route }: BreadCrumbsProps) {
   );
 }
 
-function BottomSheet({ route, backgroundColor }: BottomSheetProps) {
+function BottomSheet({ route }: BottomSheetProps) {
   return (
     <div className="bg-white rounded-t-xl shadow p-4 flex flex-col gap-4 absolute bottom-0 left-0 right-0">
       <div className="flex flex-col gap-4 p-2">
@@ -117,9 +116,9 @@ function InteractiveMap({
   return (
     <TransformWrapper>
       <TransformComponent
-        wrapperClass={`bg-[${backgroundColor}]`}
         wrapperStyle={{
           height: "100%",
+          backgroundColor,
         }}
         contentClass="items-center"
         contentStyle={{
@@ -175,14 +174,14 @@ export default function Path({
 
   return (
     <div>
-      <div className={`h-[100dvh] bg-[${BACKGROUND_COLOR}]`}>
+      <div className={`h-[100dvh]`}>
         <InteractiveMap
           mapImagePath="/maps/test_map.svg"
           mapImageAlt="테스트 지도"
           pathPoints={PATHPOINTS}
           backgroundColor={BACKGROUND_COLOR}
         />
-        <BottomSheet route={ROUTE} backgroundColor={BACKGROUND_COLOR} />
+        <BottomSheet route={ROUTE} />
       </div>
       <button
         onClick={onBackClick}
