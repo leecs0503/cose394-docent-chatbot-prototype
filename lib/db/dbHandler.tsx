@@ -11,7 +11,7 @@ export class DBHandler {
     }
 
     async getArtWorks(placeId: number): Promise<ArtWork[]> {
-        const sql = "SELECT id, place_id, name, summary, description FROM artwork WHERE place_id = ?;";
+        const sql = "SELECT id, place_id, name, summary, description FROM art_work WHERE place_id = ?;";
         const args = [placeId];
         const result = await this.db.get(sql, args);
         return result.map(([id, placeId, name, summary, description]) => ({id, placeId, name, summary, description}));

@@ -70,7 +70,7 @@ describe('DBHandlerWithDummyDBTest', () => {
       expect(dummyDB.lastSQL).toContain(snake_of(key));
     }
     expect(dummyDB.lastSQL).toContain("FROM");
-    expect(dummyDB.lastSQL).toContain("artwork");
+    expect(dummyDB.lastSQL).toContain("art_work");
     expect(dummyDB.lastArgs).toEqual(expectedArgs);
   });
 
