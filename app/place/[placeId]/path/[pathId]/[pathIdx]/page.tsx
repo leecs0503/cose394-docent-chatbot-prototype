@@ -195,9 +195,12 @@ export default function ArtworkDetail({
     <div className="h-[100dvh] flex items-center bg-cover bg-center bg-[url(https://source.unsplash.com/random)]">
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full backdrop-blur-lg bg-secondary/50 p-4 pb-56">
         {/* TODO: proper alt text */}
-        <div className="object-contain h-full w-full flex items-center">
+        <div className="object-contain h-full w-full flex items-center justify-center">
           <img
-            src={`/images/artworks/${placeId}/작품${`${artwork.id}`.padStart(2, '0')}.png`}
+            src={`/images/artworks/${placeId}/작품${`${artwork.id}`.padStart(
+              2,
+              "0"
+            )}.png`}
             alt={`Artwork ${artwork.id}`}
             className={[
               "rounded-xl shadow-lg transition-opacity",
