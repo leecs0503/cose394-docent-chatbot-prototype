@@ -30,6 +30,7 @@ interface MapResolution {
 interface PathPointProps {
   pathPoint: PathPoint;
   mapResolution: MapResolution;
+  placeId: string;
 }
 
 interface InteractiveMapProps {
@@ -37,6 +38,7 @@ interface InteractiveMapProps {
   mapImageAlt: string;
   pathPoints: PathPoint[];
   backgroundColor: string;
+  placeId: string;
 }
 
 function BreadCrumbs({ active, route }: BreadCrumbsProps) {
@@ -83,21 +85,20 @@ function BottomSheet({ route, placeId, pathId }: BottomSheetProps) {
   );
 }
 
-function PathPoint({ pathPoint, mapResolution }: PathPointProps) {
+function PathPoint({ pathPoint, mapResolution, placeId }: PathPointProps) {
   // XXX: KeepScale 컴포넌트 쓸지 말지?
   // KeepScale 컴포넌트 사용 시 지도를 확대하거나 축소해도 핀의 크기는 변하지 않습니다.
 
   return (
     <KeepScale
-      className="absolute"
+      className="absolute hover:[scale:1.25] active:[scale:1.25] transition-all origin-bottom"
       style={{
         left: `calc(${(pathPoint.x / mapResolution.width) * 100}% - 6px)`,
         top: `calc(${(pathPoint.y / mapResolution.height) * 100}% - 10px)`,
       }}
       key={pathPoint.id}
     >
-      {/* TODO: href 걸기 */}
-      <a href={null}>
+      <a href={`/place/${placeId}/path/${pathPoint.pathId}/${pathPoint.id}`}>
         <MapPin
           fill="currentColor"
           size={32}
@@ -206,6 +207,7 @@ export default function Path({
           mapImagePath="/maps/test_map.svg"
           mapImageAlt="테스트 지도"
           pathPoints={pathPoints}
+          placeId={placeId}
           backgroundColor={BACKGROUND_COLOR}
         />
         <BottomSheet route={ROUTE} placeId={placeId} pathId={pathId} />
