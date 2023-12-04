@@ -2,7 +2,7 @@
 
 import { ArrowLeft, MapPin } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 import {
   KeepScale,
   TransformComponent,
@@ -23,8 +23,13 @@ interface BottomSheetProps {
   pathId: string;
 }
 
+interface MapResolution {
+  width: number;
+  height: number;
+}
 interface PathPointProps {
   pathPoint: PathPoint;
+  mapResolution: MapResolution;
 }
 
 interface InteractiveMapProps {
@@ -78,23 +83,16 @@ function BottomSheet({ route, placeId, pathId }: BottomSheetProps) {
   );
 }
 
-function PathPoint({ pathPoint }: PathPointProps) {
+function PathPoint({ pathPoint, mapResolution }: PathPointProps) {
   // XXX: KeepScale 컴포넌트 쓸지 말지?
   // KeepScale 컴포넌트 사용 시 지도를 확대하거나 축소해도 핀의 크기는 변하지 않습니다.
 
-  // XXX: 모든 지도에 대해 동일한 이미지 크기를 사용할 필요가 있습니다.
-
-  const IMAGE_RESOLUTION = {
-    width: 752,
-    height: 1178,
-  };
-
   return (
     <KeepScale
-      className="absolute top-0 left-0"
+      className="absolute"
       style={{
-        left: `${(pathPoint.x / IMAGE_RESOLUTION.width) * 100}%`,
-        top: `${(pathPoint.y / IMAGE_RESOLUTION.height) * 100}%`,
+        left: `calc(${(pathPoint.x / mapResolution.width) * 100}% - 6px)`,
+        top: `calc(${(pathPoint.y / mapResolution.height) * 100}% - 10px)`,
       }}
       key={pathPoint.id}
     >
@@ -118,7 +116,22 @@ function InteractiveMap({
   mapImageAlt,
   pathPoints,
   backgroundColor,
+  placeId,
 }: InteractiveMapProps) {
+  const mapImageRef = useRef<HTMLImageElement>(null);
+  const [mapResolution, setMapResolution] = useState<MapResolution | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (mapImageRef.current) {
+      setMapResolution({
+        width: mapImageRef.current.naturalWidth,
+        height: mapImageRef.current.naturalHeight,
+      });
+    }
+  }, [mapImageRef]);
+
   return (
     <TransformWrapper>
       <TransformComponent
@@ -133,10 +146,21 @@ function InteractiveMap({
         }}
       >
         <div className="relative">
-          <img src={mapImagePath} alt={mapImageAlt} className="h-fit" />
-          {pathPoints.map((pathPoint) => (
-            <PathPoint pathPoint={pathPoint} key={pathPoint.id} />
-          ))}
+          <img
+            src={mapImagePath}
+            alt={mapImageAlt}
+            ref={mapImageRef}
+            className="h-fit"
+          />
+          {mapResolution &&
+            pathPoints.map((pathPoint) => (
+              <PathPoint
+                key={pathPoint.id}
+                pathPoint={pathPoint}
+                mapResolution={mapResolution}
+                placeId={placeId}
+              />
+            ))}
         </div>
       </TransformComponent>
     </TransformWrapper>
@@ -197,7 +221,10 @@ export default function Path({
 }
 
 async function getPathPoints(placeId, pathId) {
-  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/${placeId}/path/${pathId}`, {cache: "no-cache"});
+  const res = await fetch(
+    `${NEXT_PUBLIC_API_URL}/api/${placeId}/path/${pathId}`,
+    { cache: "no-cache" }
+  );
   const paths: PathPoint[] = await res.json();
   return paths;
 }
