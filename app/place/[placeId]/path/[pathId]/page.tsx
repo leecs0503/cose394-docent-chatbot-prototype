@@ -179,13 +179,20 @@ export default function Path({
     "고미술전시실 출구 오른쪽 에스컬레이터를 타시면 3층 현대미술관이 나옵니다.",
     "3층 현대미술전시실",
   ];
-  const [isLoading, setIsLoading] = useState(true);
-  const [pathPoints, setPathPoints] = useState([]);
-
-  getPathPoints(placeId, pathId).then((res) => {
-    setPathPoints(res);
-    setIsLoading(false);
+  const [info, setInfo] = useState({
+    isLoading: true,
+    pathPoints: [],
   });
+  useEffect(() => {
+    getPathPoints(placeId, pathId).then((pathPoints) => {
+      setInfo({
+        isLoading: false,
+        pathPoints,
+      });
+    });
+  }, []);
+
+  const { isLoading, pathPoints } = info;
 
   const BACKGROUND_COLOR = "#EEEEEE";
 
@@ -199,13 +206,16 @@ export default function Path({
     // FIXME: 적절한 로딩으로 수정
     return <div>loading</div>;
   }
-
+  const routeImgPath = `/images/route/${placeId}/추천루트${pathId.padStart(
+    2,
+    "0"
+  )}.png`;
   return (
     <div>
       <div className={`h-[100dvh]`}>
         <InteractiveMap
-          mapImagePath="/maps/test_map.svg"
-          mapImageAlt="테스트 지도"
+          mapImagePath={routeImgPath}
+          mapImageAlt="지도"
           pathPoints={pathPoints}
           placeId={placeId}
           backgroundColor={BACKGROUND_COLOR}
