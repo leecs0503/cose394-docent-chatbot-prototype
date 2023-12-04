@@ -189,7 +189,7 @@ export default function Path({
       <div className={`h-[100dvh]`}>
         <InteractiveMap
           mapImagePath={routeImgPath}
-          mapImageAlt="테스트 지도"
+          mapImageAlt="지도"
           pathPoints={pathPoints}
           backgroundColor={BACKGROUND_COLOR}
         />
