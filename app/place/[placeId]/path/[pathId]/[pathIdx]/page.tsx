@@ -181,14 +181,14 @@ export default function ArtworkDetail({
     isLoading: true,
     isFail: false,
     artwork: null,
-    previousPathIdx: null,
-    nxtPathIdx: null,
+    previousPath: null,
+    nxtPath: null,
   });
   useEffect(() => {
     getInfos(placeId, pathId, parseInt(pathIdx)).then(setInfos);
   }, []);
 
-  const { isLoading, isFail, artwork, previousPathIdx, nxtPathIdx } = infos;
+  const { isLoading, isFail, artwork, previousPath, nxtPath } = infos;
 
   if (isLoading) {
     return <div> loading.. </div>;
@@ -221,7 +221,7 @@ export default function ArtworkDetail({
             ].join(" ")}
           />
           <a
-            href={`/place/${placeId}/path/${pathId}/${previousPathIdx}`}
+            href={previousPath}
             className={[
               "btn btn-sm btn-circle absolute bg-opacity-80 border-opacity-80 text-neutral/80 left-0 ml-8",
               isShowing && "opacity-0",
@@ -230,7 +230,7 @@ export default function ArtworkDetail({
             <ChevronLeft />
           </a>
           <a
-            href={`/place/${placeId}/path/${pathId}/${nxtPathIdx}`}
+            href={nxtPath}
             className={[
               "btn btn-sm btn-circle absolute bg-opacity-80 border-opacity-80 text-neutral/80 right-0 mr-8",
               isShowing && "opacity-0",
@@ -254,8 +254,8 @@ const FAIL_INFO = {
   isLoading: false,
   isFail: true,
   artwork: null,
-  previousPathIdx: null,
-  nxtPathIdx: null,
+  previousPath: null,
+  nxtPath: null,
 };
 
 async function getInfos(placeId, pathId, pathIdx: number) {
@@ -276,12 +276,16 @@ async function getInfos(placeId, pathId, pathIdx: number) {
   if (artwork == null) {
     return FAIL_INFO;
   }
+  const previousPath = `/place/${placeId}/path/${pathId}/${Math.max(0, pathIdx - 1)}`;
+  const nxtPath = (pathIdx == pathPoints.length - 1) ?
+    `/place/${placeId}/path/${pathId}/end`:
+    `/place/${placeId}/path/${pathId}/${pathIdx + 1}`;
   return {
     isLoading: false,
     isFail: false,
     artwork,
-    previousPathIdx: Math.max(0, pathIdx - 1),
-    nxtPathIdx: Math.max(0, Math.min(pathPoints.length - 1, pathIdx + 1)),
+    previousPath,
+    nxtPath,
   };
 }
 
