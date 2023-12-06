@@ -325,7 +325,7 @@ function MapButton({ placeId, pathId }: { placeId: string; pathId: string }) {
   return (
     <Link
       href={`/place/${placeId}/path/${pathId}`}
-      className="btn btn-ghost bg-white shadow-md fixed top-4 left-4 z-50 font-bold text-[15px] text-primary"
+      className="btn btn-ghost bg-white shadow-md absolute top-4 left-4 z-50 font-bold text-[15px] text-primary"
     >
       <MapPinned size={32} />
       <span className="text-neutral">Map</span>
