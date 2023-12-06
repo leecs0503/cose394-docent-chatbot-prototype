@@ -15,6 +15,8 @@ import {
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
+import Loading from "./loading";
+
 import { NEXT_PUBLIC_API_URL } from "@app/constants";
 import { ArtWork, Path } from "@lib/interfaces";
 
@@ -199,7 +201,7 @@ export default function ArtworkDetail({
   const { isLoading, isFail, artwork, previousPath, nxtPath } = infos;
 
   if (isLoading) {
-    return <div> loading.. </div>;
+    return <Loading />;
   }
   if (isFail) {
     return <div> fail </div>;
