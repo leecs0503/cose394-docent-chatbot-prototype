@@ -2,7 +2,7 @@
 
 import { ArrowLeft, MapPin } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 import {
   KeepScale,
   TransformComponent,
@@ -23,8 +23,16 @@ interface BottomSheetProps {
   pathId: string;
 }
 
+interface MapResolution {
+  width: number;
+  height: number;
+}
+
 interface PathPointProps {
   pathPoint: PathPoint;
+  mapResolution: MapResolution;
+  placeId: string;
+  offset: number;
 }
 
 interface InteractiveMapProps {
@@ -32,6 +40,7 @@ interface InteractiveMapProps {
   mapImageAlt: string;
   pathPoints: PathPoint[];
   backgroundColor: string;
+  placeId: string;
 }
 
 function BreadCrumbs({ active, route }: BreadCrumbsProps) {
@@ -78,28 +87,29 @@ function BottomSheet({ route, placeId, pathId }: BottomSheetProps) {
   );
 }
 
-function PathPoint({ pathPoint }: PathPointProps) {
+function PathPoint({
+  pathPoint,
+  mapResolution,
+  offset,
+  placeId,
+}: PathPointProps) {
   // XXX: KeepScale 컴포넌트 쓸지 말지?
   // KeepScale 컴포넌트 사용 시 지도를 확대하거나 축소해도 핀의 크기는 변하지 않습니다.
 
-  // XXX: 모든 지도에 대해 동일한 이미지 크기를 사용할 필요가 있습니다.
-
-  const IMAGE_RESOLUTION = {
-    width: 752,
-    height: 1178,
-  };
-
   return (
     <KeepScale
-      className="absolute top-0 left-0"
+      className="absolute hover:[scale:1.25] active:[scale:1.25] transition-all origin-bottom"
       style={{
-        left: `${(pathPoint.x / IMAGE_RESOLUTION.width) * 100}%`,
-        top: `${(pathPoint.y / IMAGE_RESOLUTION.height) * 100}%`,
+        left: `calc(${(pathPoint.x / mapResolution.width) * 100}% - 6px)`,
+        top: `calc(${(pathPoint.y / mapResolution.height) * 100}% - 10px)`,
       }}
       key={pathPoint.id}
     >
-      {/* TODO: href 걸기 */}
-      <a href={null}>
+      <a
+        href={`/place/${placeId}/path/${pathPoint.pathId}/${
+          pathPoint.id - offset
+        }`}
+      >
         <MapPin
           fill="currentColor"
           size={32}
@@ -118,7 +128,26 @@ function InteractiveMap({
   mapImageAlt,
   pathPoints,
   backgroundColor,
+  placeId,
 }: InteractiveMapProps) {
+  const mapImageRef = useRef<HTMLImageElement>(null);
+  const [mapResolution, setMapResolution] = useState<MapResolution | null>(
+    null
+  );
+
+  const onImageLoad = () => {
+    setMapResolution({
+      width: mapImageRef.current.naturalWidth,
+      height: mapImageRef.current.naturalHeight,
+    });
+  };
+
+  // FIXME: remove this
+  const offset = Math.min.apply(
+    null,
+    pathPoints.map((pathPoint) => pathPoint.id)
+  );
+
   return (
     <TransformWrapper>
       <TransformComponent
@@ -133,10 +162,23 @@ function InteractiveMap({
         }}
       >
         <div className="relative">
-          <img src={mapImagePath} alt={mapImageAlt} className="h-fit" />
-          {pathPoints.map((pathPoint) => (
-            <PathPoint pathPoint={pathPoint} key={pathPoint.id} />
-          ))}
+          <img
+            src={mapImagePath}
+            alt={mapImageAlt}
+            ref={mapImageRef}
+            onLoad={onImageLoad}
+            className="h-fit"
+          />
+          {mapResolution &&
+            pathPoints.map((pathPoint) => (
+              <PathPoint
+                key={pathPoint.id}
+                pathPoint={pathPoint}
+                offset={offset}
+                mapResolution={mapResolution}
+                placeId={placeId}
+              />
+            ))}
         </div>
       </TransformComponent>
     </TransformWrapper>
@@ -158,18 +200,16 @@ export default function Path({
     isLoading: true,
     pathPoints: [],
   });
-  useEffect(
-    ()=>{
-      getPathPoints(placeId, pathId).then((pathPoints) => {
-        setInfo({
-          isLoading: false,
-          pathPoints,
-        });
+  useEffect(() => {
+    getPathPoints(placeId, pathId).then((pathPoints) => {
+      setInfo({
+        isLoading: false,
+        pathPoints,
       });
-    }, []
-  );
+    });
+  }, []);
 
-  const {isLoading, pathPoints} = info;
+  const { isLoading, pathPoints } = info;
 
   const BACKGROUND_COLOR = "#EEEEEE";
 
@@ -183,7 +223,10 @@ export default function Path({
     // FIXME: 적절한 로딩으로 수정
     return <div>loading</div>;
   }
-  const routeImgPath = `/images/route/${placeId}/추천루트${pathId.padStart(2, "0")}.png`;
+  const routeImgPath = `/images/route/${placeId}/추천루트${pathId.padStart(
+    2,
+    "0"
+  )}.png`;
   return (
     <div>
       <div className={`h-[100dvh]`}>
@@ -191,6 +234,7 @@ export default function Path({
           mapImagePath={routeImgPath}
           mapImageAlt="지도"
           pathPoints={pathPoints}
+          placeId={placeId}
           backgroundColor={BACKGROUND_COLOR}
         />
         <BottomSheet route={ROUTE} placeId={placeId} pathId={pathId} />
@@ -206,7 +250,10 @@ export default function Path({
 }
 
 async function getPathPoints(placeId, pathId) {
-  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/${placeId}/path/${pathId}`, {cache: "no-cache"});
+  const res = await fetch(
+    `${NEXT_PUBLIC_API_URL}/api/${placeId}/path/${pathId}`,
+    { cache: "no-cache" }
+  );
   const paths: PathPoint[] = await res.json();
   return paths;
 }
