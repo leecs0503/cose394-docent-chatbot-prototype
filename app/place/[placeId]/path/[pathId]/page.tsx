@@ -90,6 +90,15 @@ function PathPoint({ pathPoint, mapResolution, placeId }: PathPointProps) {
   // XXX: KeepScale 컴포넌트 쓸지 말지?
   // KeepScale 컴포넌트 사용 시 지도를 확대하거나 축소해도 핀의 크기는 변하지 않습니다.
 
+  // FIXME: fix hard-coded values
+  const href = (function () {
+    if (placeId === "2" && pathPoint.pathId === 3) {
+      return `/place/${placeId}/path/${pathPoint.pathId}/${pathPoint.id - 5}`;
+    }
+
+    return `/place/${placeId}/path/${pathPoint.pathId}/${pathPoint.id}`;
+  })();
+
   return (
     <KeepScale
       className="absolute hover:[scale:1.25] active:[scale:1.25] transition-all origin-bottom"
@@ -99,7 +108,7 @@ function PathPoint({ pathPoint, mapResolution, placeId }: PathPointProps) {
       }}
       key={pathPoint.id}
     >
-      <a href={`/place/${placeId}/path/${pathPoint.pathId}/${pathPoint.id}`}>
+      <a href={href}>
         <MapPin
           fill="currentColor"
           size={32}
