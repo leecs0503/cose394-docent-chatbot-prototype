@@ -14,16 +14,25 @@ interface StepProps {
 
 function Step({ title, description, image, imageAlt, onNextClick }: StepProps) {
   return (
-    <div>
+    <div className="h-[100dvh] flex flex-col">
       <div className="flex justify-center">
-        <img className="bg-stone-300 object-contain" src={image} alt={imageAlt} />
+        <img
+          className="bg-stone-300 object-contain"
+          src={image}
+          alt={imageAlt}
+        />
       </div>
-      <div className="flex flex-col gap-3 p-6 pb-28 break-keep">
+      <div className="flex flex-col gap-3 p-6 pb-28 break-keep flex-grow overflow-auto">
         <h1 className="font-bold text-2xl whitespace-pre-wrap">{title}</h1>
-        {
-          (!description.includes("\n")) ? <p className="text-stone-500">{description}</p>
-          : description.split("\n").map((v) => <p className="text-stone-500" key={v}>{v}</p>)
-        }
+        {!description.includes("\n") ? (
+          <p className="text-stone-500">{description}</p>
+        ) : (
+          description.split("\n").map((v) => (
+            <p className="text-stone-500" key={v}>
+              {v}
+            </p>
+          ))
+        )}
       </div>
       <button
         onClick={onNextClick}
@@ -39,13 +48,15 @@ export default function OnBoard() {
   const ONBOARDING_STEPS = [
     {
       title: "도손트는 누구에게나 ’손쉬운’\n관광 문화를 만듭니다.",
-      description: "여러분들만의 개인 온라인 관광 가이드 '도손트'를 소개합니다.",
+      description:
+        "여러분들만의 개인 온라인 관광 가이드 '도손트'를 소개합니다.",
       image: "/images/onboard/1.png",
       imageAlt: "",
     },
     {
       title: "해당 서비스 소개",
-      description: "여러분들은 '도손트'를 통해 관광지 탐색, 관광지 추천 루트와 가이드를 확인할 수 있습니다.",
+      description:
+        "여러분들은 '도손트'를 통해 관광지 탐색, 관광지 추천 루트와 가이드를 확인할 수 있습니다.",
       image: "/images/onboard/2.png",
       imageAlt: "",
     },
