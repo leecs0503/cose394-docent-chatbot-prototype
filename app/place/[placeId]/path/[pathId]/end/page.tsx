@@ -55,6 +55,8 @@ export default function End({
         <div className="flex flex-col gap-2 mt-2">
           {rating && (
             <button
+              data-umami-event="rating-submit"
+              data-umami-event-rating={rating}
               onClick={handleSubmit}
               disabled={isSubmitted}
               className={[
@@ -70,6 +72,8 @@ export default function End({
           {/* TODO: Google 설문 href 걸기 */}
           {isSubmitted && (
             <a
+              data-umami-event="go-to-google-form"
+              data-umami-event-go-to-google-form-rating={rating}
               href={GOOGLE_FORM_URL}
               target="_blank"
               className="btn btn-secondary btn-wide"

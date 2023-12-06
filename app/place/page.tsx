@@ -1,4 +1,4 @@
-import { MapPin, Pyramid } from "lucide-react";
+import { MapPin } from "lucide-react";
 
 import { NEXT_PUBLIC_API_URL } from "@app/constants";
 import { Place } from "@lib/interfaces";
@@ -27,7 +27,12 @@ function Card({ place }: CardProps) {
         <div className="text-xl font-bold text-primary text-center">
           {place.name}
         </div>
-        <a href={`/place/${place.id}`} className="btn btn-primary w-64">
+        <a
+          href={`/place/${place.id}`}
+          className="btn btn-primary w-64"
+          data-umami-event="place-select"
+          data-umami-event-place-select-name={place.name}
+        >
           가이드 시작하기
         </a>
       </div>
@@ -36,7 +41,9 @@ function Card({ place }: CardProps) {
 }
 
 export default async function PlacePage() {
-  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/place`, {cache: "no-cache"});
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/place`, {
+    cache: "no-cache",
+  });
   const places: Place[] = await res.json();
   return (
     <div className="bg-primary min-h-[100dvh] flex justify-center">
