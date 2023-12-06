@@ -118,7 +118,7 @@ function PathPoint({
           className="text-red-600 drop-shadow-lg"
         />
         <div className="absolute inset-0 font-semibold text-lg text-white text-center">
-          {pathPoint.id + 1}
+          {pathPoint.id + 1 - offset}
         </div>
       </a>
     </KeepScale>
