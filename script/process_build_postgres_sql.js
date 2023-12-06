@@ -30,6 +30,8 @@ const Main = async () => {
     const files = await fs.readdir(ROOT_PATH);
     const result = [];
     for (const placeName of files) {
+        // TODO: 아래 pathID = 1 주석 해제하고, DB 업데이트, 추천루트 리소스명 업데이트
+        // pathID = 1;
         if (placeName.includes("README")) {
             continue;
         }

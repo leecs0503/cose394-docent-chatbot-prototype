@@ -34,18 +34,22 @@ interface AudioPlayerProps {
 
 function ArtworkInfo({ isShowing, artwork }: ArtworkInfoProps) {
   return (
-    <div className="bg-white rounded-xl shadow p-5 pt-7 flex flex-col gap-4">
+    <div className="bg-white rounded-xl shadow pt-7 flex flex-col gap-4 overflow-hidden">
       {isShowing === true && (
-        <div className="flex flex-col gap-2">
-          <h1 className="text-center font-bold text-neutral">{artwork.name}</h1>
-          <p className="text-center font-semibold text-neutral/70 text-sm">
+        <div className="flex flex-col gap-2 break-keep">
+          <h1 className="text-center font-bold text-neutral px-5">
+            {artwork.name}
+          </h1>
+          <p className="text-center font-semibold text-neutral/70 text-sm px-5">
             {artwork.summary}
           </p>
-          <p className="text-neutral/90">{artwork.description}</p>
+          <div className="max-h-[50dvh] overflow-y-auto">
+            <p className="text-neutral/90 px-5 pb-5">{artwork.description}</p>
+          </div>
         </div>
       )}
       {isShowing === false && (
-        <h1 className="text-center font-bold">도슨트 읽기</h1>
+        <h1 className="text-center font-bold px-5 pb-5">도슨트 읽기</h1>
       )}
     </div>
   );
@@ -192,14 +196,24 @@ export default function ArtworkDetail({
   if (isFail) {
     return <div> fail </div>;
   }
-  // TODO: 배경도 작품 이미지로 변경
+
+  const imageURL = `/images/artworks/${placeId}/작품${`${artwork.id}`.padStart(
+    2,
+    "0"
+  )}.png`;
+
   return (
-    <div className="h-[100dvh] flex items-center bg-cover bg-center bg-[url(https://source.unsplash.com/random)]">
+    <div
+      className="h-[100dvh] flex items-center bg-cover bg-center"
+      style={{
+        backgroundImage: `url(${imageURL})`,
+      }}
+    >
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full backdrop-blur-lg bg-secondary/50 p-4 pb-56">
         {/* TODO: proper alt text */}
-        <div className="object-contain h-full w-full flex items-center">
+        <div className="object-contain h-full w-full flex items-center justify-center">
           <img
-            src={`/images/artworks/${placeId}/작품${`${artwork.id}`.padStart(2, '0')}.png`}
+            src={imageURL}
             alt={`Artwork ${artwork.id}`}
             className={[
               "rounded-xl shadow-lg transition-opacity",
@@ -245,8 +259,10 @@ const FAIL_INFO = {
 };
 
 async function getInfos(placeId, pathId, pathIdx: number) {
-  const pathPoints = await getPathPoints(placeId, pathId);
-  const artworks = await getArtworks(placeId, pathId);
+  const promise1 = getPathPoints(placeId, pathId);
+  const promise2 = getArtworks(placeId, pathId);
+  const pathPoints = await promise1;
+  const artworks = await promise2;
   if (isNaN(pathIdx) || pathIdx < 0 || pathIdx >= pathPoints.length) {
     return FAIL_INFO;
   }
