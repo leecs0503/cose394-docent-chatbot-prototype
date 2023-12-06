@@ -21,6 +21,9 @@ function Card({ path }: CardProps) {
 
   return (
     <a
+      data-umami-event="path-select"
+      data-umami-event-path-select-name={path.name}
+      data-umami-event-path-select-place-id={path.placeId}
       href={`/place/${path.placeId}/path/${path.id}`}
       className="btn h-auto bg-base-100 rounded-xl shadow-lg flex p-5 gap-4 justify-between items-center flex-nowrap"
     >
@@ -62,7 +65,9 @@ export default async function Path({
 }
 
 async function getPaths(placeId) {
-  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/${placeId}/path`, {cache: "no-cache"});
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/${placeId}/path`, {
+    cache: "no-cache",
+  });
   const paths: Path[] = await res.json();
   return paths;
 }

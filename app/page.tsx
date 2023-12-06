@@ -10,9 +10,17 @@ interface StepProps {
   image: string;
   imageAlt: string;
   onNextClick: () => void;
+  step: number;
 }
 
-function Step({ title, description, image, imageAlt, onNextClick }: StepProps) {
+function Step({
+  title,
+  description,
+  image,
+  imageAlt,
+  onNextClick,
+  step,
+}: StepProps) {
   return (
     <div className="min-h-[100dvh] flex flex-col">
       <div className="flex justify-center">
@@ -31,6 +39,8 @@ function Step({ title, description, image, imageAlt, onNextClick }: StepProps) {
         ))}
       </div>
       <button
+        data-umami-event="onboarding-next"
+        data-umami-event-onboarding-step={step}
         onClick={onNextClick}
         className="btn w-auto h-auto rounded-full aspect-square p-4 btn-primary shadow-md shadow-primary/30 fixed right-6 bottom-6"
       >
@@ -85,7 +95,11 @@ export default function OnBoard() {
         <div className="text-[15px] font-light">내 손 안의 도슨트,</div>
         <div className="font-bold text-[50px]">DoSonT</div>
       </div>
-      <Step {...ONBOARDING_STEPS[currentStep]} onNextClick={onNextClick} />
+      <Step
+        {...ONBOARDING_STEPS[currentStep]}
+        onNextClick={onNextClick}
+        step={currentStep}
+      />
     </>
   );
 }

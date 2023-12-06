@@ -7,10 +7,10 @@ import {
   ChevronUp,
   Headphones,
   Loader2,
+  MapPinned,
   Pause,
   Play,
   Rewind,
-  MapPinned,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -90,7 +90,7 @@ function AudioPlayer({ src, artworkName }: AudioPlayerProps) {
         if (audioRef.current) {
           const { currentTime, duration } = audioRef.current;
           const progress = (currentTime / duration) * 100;
-  
+
           if (progressBarRef.current) {
             progressBarRef.current.value = progress;
           }
@@ -124,6 +124,9 @@ function AudioPlayer({ src, artworkName }: AudioPlayerProps) {
         <div className="flex gap-0.5 ml-auto translate-x-2.5">
           {isPlaying && isLoading === false && (
             <button
+              data-umami-event="audio-playback-control"
+              data-umami-event-audio-playback-type="rewind"
+              data-umami-event-audio-playback-control-artwork-name={artworkName}
               onClick={onRewindClick}
               className="btn btn-ghost p-2 aspect-square shrink-0"
             >
@@ -133,6 +136,9 @@ function AudioPlayer({ src, artworkName }: AudioPlayerProps) {
             </button>
           )}
           <button
+            data-umami-event="audio-playback-control"
+            data-umami-event-audio-playback-type={isPlaying ? "pause" : "play"}
+            data-umami-event-audio-playback-control-artwork-name={artworkName}
             onClick={onPlaybackActionClick}
             className="btn btn-ghost p-2 aspect-square shrink-0"
           >
@@ -165,6 +171,14 @@ function BottomSheet({
     <div className="absolute bottom-0 left-0 right-0 flex flex-col gap-4 p-4">
       <div className="flex justify-center translate-y-8">
         <button
+          data-umami-event="artwork-bottom-sheet-control"
+          data-umami-event-artwork-bottom-sheet-control-type={
+            isShowing ? "close" : "open"
+          }
+          data-umami-event-artwork-bottom-sheet-control-artwork-name={
+            artwork.name
+          }
+          data-umami-event-artwork-bottom-sheet-control-place-id={placeId}
           onClick={onChevronClick}
           aria-label="닫기"
           className="btn btn-primary btn-circle shadow-md shadow-primary/30 btn-sm"
@@ -232,6 +246,10 @@ export default function ArtworkDetail({
             ].join(" ")}
           />
           <a
+            data-umami-event="see-previous-artwork"
+            data-umami-event-see-previous-artwork-place-id={placeId}
+            data-umami-event-see-previous-artwork-path-id={pathId}
+            data-umami-event-see-previous-artwork-name={artwork.name}
             href={previousPath}
             className={[
               "btn btn-sm btn-circle absolute bg-opacity-80 border-opacity-80 text-neutral/80 left-0 ml-8",
@@ -241,6 +259,10 @@ export default function ArtworkDetail({
             <ChevronLeft />
           </a>
           <a
+            data-umami-event="see-next-artwork"
+            data-umami-event-see-next-artwork-place-id={placeId}
+            data-umami-event-see-next-artwork-path-id={pathId}
+            data-umami-event-see-next-artwork-name={artwork.name}
             href={nxtPath}
             className={[
               "btn btn-sm btn-circle absolute bg-opacity-80 border-opacity-80 text-neutral/80 right-0 mr-8",
@@ -324,6 +346,9 @@ async function getArtworks(placeId, pathId) {
 function MapButton({ placeId, pathId }: { placeId: string; pathId: string }) {
   return (
     <Link
+      data-umami-event="see-path-map"
+      data-umami-event-see-path-map-place-id={placeId}
+      data-umami-event-see-path-map-path-id={pathId}
       href={`/place/${placeId}/path/${pathId}`}
       className="btn btn-ghost bg-white shadow-md absolute top-4 left-4 z-50 font-bold text-[15px] text-primary"
     >

@@ -20,6 +20,8 @@ function PlaceInfo({ place }: PlaceInfoProps) {
       </div>
       <div className="absolute bottom-0 right-0 left-0 w-full p-6 pt-0">
         <a
+          data-umami-event="place-confirm"
+          data-umami-event-place-confirm-name={place.name}
           href={`/place/${place.id}/path`}
           className="btn btn-primary w-full shadow-md shadow-primary/30"
         >
@@ -29,7 +31,6 @@ function PlaceInfo({ place }: PlaceInfoProps) {
     </div>
   );
 }
-
 
 export default async function PlaceDetail({
   params: { placeId },
@@ -44,7 +45,9 @@ export default async function PlaceDetail({
 }
 
 async function getPlace(placeId: string): Promise<Place | null> {
-  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/place`, {cache: "no-cache"});
+  const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/place`, {
+    cache: "no-cache",
+  });
   const places: Place[] = await res.json();
   // TODO: 별도 API 파기
   let place = null;

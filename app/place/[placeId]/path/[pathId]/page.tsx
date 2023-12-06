@@ -80,6 +80,9 @@ function BottomSheet({ route, placeId, pathId }: BottomSheetProps) {
         <BreadCrumbs active={0} route={route} />
       </div>
       <a
+        data-umami-event="path-start"
+        data-umami-event-path-start-name={pathId}
+        data-umami-event-path-start-place-id={placeId}
         href={`/place/${placeId}/path/${pathId}/0`}
         className="btn btn-primary"
       >
@@ -108,6 +111,10 @@ function PathPoint({
       key={pathPoint.id}
     >
       <a
+        data-umami-event="pathpoint-select"
+        data-umami-event-pathpoint-select-name={pathPoint.id}
+        data-umami-event-pathpoint-select-place-id={placeId}
+        data-umami-event-pathpoint-select-path-id={pathPoint.pathId}
         href={`/place/${placeId}/path/${pathPoint.pathId}/${
           pathPoint.id - offset
         }`}
