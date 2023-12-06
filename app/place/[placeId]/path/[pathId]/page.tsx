@@ -160,7 +160,7 @@ function InteractiveMap({
         contentClass="items-center"
         contentStyle={{
           height: "100%",
-          paddingBottom: "8rem",
+          paddingBottom: "15rem",
         }}
       >
         <div className="relative">
@@ -169,7 +169,6 @@ function InteractiveMap({
             alt={mapImageAlt}
             ref={mapImageRef}
             onLoad={onImageLoad}
-            className="h-fit"
           />
           {mapResolution &&
             pathPoints.map((pathPoint) => (
