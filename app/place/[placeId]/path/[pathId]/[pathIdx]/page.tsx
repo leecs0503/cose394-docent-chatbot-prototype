@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+import Loading from "./loading";
+
 import { NEXT_PUBLIC_API_URL } from "@app/constants";
 import { ArtWork, Path } from "@lib/interfaces";
 
@@ -111,11 +113,7 @@ function AudioPlayer({ src, artworkName }: AudioPlayerProps) {
 
   return (
     <div className="bg-white rounded-xl shadow p-5 pt-3 flex flex-col gap-2">
-      <audio
-        ref={audioRef}
-        src={src}
-        preload="auto"
-      />
+      <audio ref={audioRef} src={src} preload="auto" />
       <div className="flex gap-2 text-neutral items-center flex-wrap">
         <Headphones className="shrink-0" size={18} strokeWidth={2.5} />
         <div className="font-bold text-sm">{artworkName} 가이드</div>
@@ -147,7 +145,12 @@ function AudioPlayer({ src, artworkName }: AudioPlayerProps) {
   );
 }
 
-function BottomSheet({ placeId, artwork, isShowing, setIsShowing }: BottomSheetProps) {
+function BottomSheet({
+  placeId,
+  artwork,
+  isShowing,
+  setIsShowing,
+}: BottomSheetProps) {
   const onChevronClick = () => {
     setIsShowing((prev) => !prev);
   };
@@ -166,7 +169,10 @@ function BottomSheet({ placeId, artwork, isShowing, setIsShowing }: BottomSheetP
         </button>
       </div>
       <ArtworkInfo isShowing={isShowing} artwork={artwork} />
-      <AudioPlayer src={`/voices/${placeId}/${artwork.id}.mp3`} artworkName={artwork.name} />
+      <AudioPlayer
+        src={`/voices/${placeId}/${artwork.id}.mp3`}
+        artworkName={artwork.name}
+      />
     </div>
   );
 }
@@ -191,7 +197,7 @@ export default function ArtworkDetail({
   const { isLoading, isFail, artwork, previousPath, nxtPath } = infos;
 
   if (isLoading) {
-    return <div> loading.. </div>;
+    return <Loading />;
   }
   if (isFail) {
     return <div> fail </div>;
