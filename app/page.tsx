@@ -23,7 +23,7 @@ function Step({ title, description, image, imageAlt, onNextClick }: StepProps) {
         <p className="text-stone-500">
           {
             (!description.includes("\n")) ? description
-            : description.split("\n").map((v) => <div>{v}</div>)
+            : description.split("\n").map((v) => <div key={v}>{v}</div>)
           }
         </p>
       </div>
