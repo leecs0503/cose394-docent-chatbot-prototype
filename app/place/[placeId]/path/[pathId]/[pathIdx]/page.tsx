@@ -10,7 +10,9 @@ import {
   Pause,
   Play,
   Rewind,
+  MapPinned,
 } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import { NEXT_PUBLIC_API_URL } from "@app/constants";
@@ -111,11 +113,7 @@ function AudioPlayer({ src, artworkName }: AudioPlayerProps) {
 
   return (
     <div className="bg-white rounded-xl shadow p-5 pt-3 flex flex-col gap-2">
-      <audio
-        ref={audioRef}
-        src={src}
-        preload="auto"
-      />
+      <audio ref={audioRef} src={src} preload="auto" />
       <div className="flex gap-2 text-neutral items-center flex-wrap">
         <Headphones className="shrink-0" size={18} strokeWidth={2.5} />
         <div className="font-bold text-sm">{artworkName} 가이드</div>
@@ -147,7 +145,12 @@ function AudioPlayer({ src, artworkName }: AudioPlayerProps) {
   );
 }
 
-function BottomSheet({ placeId, artwork, isShowing, setIsShowing }: BottomSheetProps) {
+function BottomSheet({
+  placeId,
+  artwork,
+  isShowing,
+  setIsShowing,
+}: BottomSheetProps) {
   const onChevronClick = () => {
     setIsShowing((prev) => !prev);
   };
@@ -166,7 +169,10 @@ function BottomSheet({ placeId, artwork, isShowing, setIsShowing }: BottomSheetP
         </button>
       </div>
       <ArtworkInfo isShowing={isShowing} artwork={artwork} />
-      <AudioPlayer src={`/voices/${placeId}/${artwork.id}.mp3`} artworkName={artwork.name} />
+      <AudioPlayer
+        src={`/voices/${placeId}/${artwork.id}.mp3`}
+        artworkName={artwork.name}
+      />
     </div>
   );
 }
@@ -209,6 +215,7 @@ export default function ArtworkDetail({
         backgroundImage: `url(${imageURL})`,
       }}
     >
+      <MapButton placeId={placeId} pathId={pathId} />
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full backdrop-blur-lg bg-secondary/50 p-4 pb-56">
         {/* TODO: proper alt text */}
         <div className="object-contain h-full w-full flex items-center justify-center">
@@ -276,10 +283,14 @@ async function getInfos(placeId, pathId, pathIdx: number) {
   if (artwork == null) {
     return FAIL_INFO;
   }
-  const previousPath = `/place/${placeId}/path/${pathId}/${Math.max(0, pathIdx - 1)}`;
-  const nxtPath = (pathIdx == pathPoints.length - 1) ?
-    `/place/${placeId}/path/${pathId}/end`:
-    `/place/${placeId}/path/${pathId}/${pathIdx + 1}`;
+  const previousPath = `/place/${placeId}/path/${pathId}/${Math.max(
+    0,
+    pathIdx - 1
+  )}`;
+  const nxtPath =
+    pathIdx == pathPoints.length - 1
+      ? `/place/${placeId}/path/${pathId}/end`
+      : `/place/${placeId}/path/${pathId}/${pathIdx + 1}`;
   return {
     isLoading: false,
     isFail: false,
@@ -304,4 +315,16 @@ async function getArtworks(placeId, pathId) {
   });
   const artworks: ArtWork[] = await res.json();
   return artworks;
+}
+
+function MapButton({ placeId, pathId }: { placeId: string; pathId: string }) {
+  return (
+    <Link
+      href={`/place/${placeId}/path/${pathId}`}
+      className="btn btn-ghost bg-white shadow-md fixed top-4 left-4 z-50 font-bold text-[15px] text-primary"
+    >
+      <MapPinned size={32} />
+      <span className="text-neutral">Map</span>
+    </Link>
+  );
 }
