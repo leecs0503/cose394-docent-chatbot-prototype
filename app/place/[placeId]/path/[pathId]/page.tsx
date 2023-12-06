@@ -27,6 +27,7 @@ interface MapResolution {
   width: number;
   height: number;
 }
+
 interface PathPointProps {
   pathPoint: PathPoint;
   mapResolution: MapResolution;
@@ -124,14 +125,12 @@ function InteractiveMap({
     null
   );
 
-  useEffect(() => {
-    if (mapImageRef.current) {
-      setMapResolution({
-        width: mapImageRef.current.naturalWidth,
-        height: mapImageRef.current.naturalHeight,
-      });
-    }
-  }, [mapImageRef]);
+  const onImageLoad = () => {
+    setMapResolution({
+      width: mapImageRef.current.naturalWidth,
+      height: mapImageRef.current.naturalHeight,
+    });
+  };
 
   return (
     <TransformWrapper>
@@ -151,6 +150,7 @@ function InteractiveMap({
             src={mapImagePath}
             alt={mapImageAlt}
             ref={mapImageRef}
+            onLoad={onImageLoad}
             className="h-fit"
           />
           {mapResolution &&
