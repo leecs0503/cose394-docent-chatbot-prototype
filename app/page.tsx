@@ -14,7 +14,7 @@ interface StepProps {
 
 function Step({ title, description, image, imageAlt, onNextClick }: StepProps) {
   return (
-    <div className="h-[100dvh] flex flex-col">
+    <div className="min-h-[100dvh] flex flex-col">
       <div className="flex justify-center">
         <img
           className="bg-stone-300 object-contain"
@@ -32,7 +32,7 @@ function Step({ title, description, image, imageAlt, onNextClick }: StepProps) {
       </div>
       <button
         onClick={onNextClick}
-        className="btn w-auto h-auto rounded-full aspect-square p-4 btn-primary shadow-md shadow-primary/30 absolute right-6 bottom-6"
+        className="btn w-auto h-auto rounded-full aspect-square p-4 btn-primary shadow-md shadow-primary/30 fixed right-6 bottom-6"
       >
         <ArrowRight size={36} />
       </button>
