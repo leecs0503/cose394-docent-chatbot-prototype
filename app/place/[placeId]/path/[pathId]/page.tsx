@@ -9,6 +9,8 @@ import {
   TransformWrapper,
 } from "react-zoom-pan-pinch";
 
+import Loading from "./loading";
+
 import { NEXT_PUBLIC_API_URL } from "@app/constants";
 import { PathPoint } from "@lib/interfaces";
 
@@ -158,18 +160,16 @@ export default function Path({
     isLoading: true,
     pathPoints: [],
   });
-  useEffect(
-    ()=>{
-      getPathPoints(placeId, pathId).then((pathPoints) => {
-        setInfo({
-          isLoading: false,
-          pathPoints,
-        });
+  useEffect(() => {
+    getPathPoints(placeId, pathId).then((pathPoints) => {
+      setInfo({
+        isLoading: false,
+        pathPoints,
       });
-    }, []
-  );
+    });
+  }, []);
 
-  const {isLoading, pathPoints} = info;
+  const { isLoading, pathPoints } = info;
 
   const BACKGROUND_COLOR = "#EEEEEE";
 
@@ -180,10 +180,12 @@ export default function Path({
   };
 
   if (isLoading) {
-    // FIXME: 적절한 로딩으로 수정
-    return <div>loading</div>;
+    return <Loading />;
   }
-  const routeImgPath = `/images/route/${placeId}/추천루트${pathId.padStart(2, "0")}.png`;
+  const routeImgPath = `/images/route/${placeId}/추천루트${pathId.padStart(
+    2,
+    "0"
+  )}.png`;
   return (
     <div>
       <div className={`h-[100dvh]`}>
