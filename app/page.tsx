@@ -17,7 +17,7 @@ function Step({ title, description, image, imageAlt, onNextClick }: StepProps) {
     <div className="min-h-[100dvh] flex flex-col">
       <div className="flex justify-center">
         <img
-          className="bg-stone-300 object-contain"
+          className="bg-white object-contain aspect-square"
           src={image}
           alt={imageAlt}
         />
