@@ -32,6 +32,7 @@ interface PathPointProps {
   pathPoint: PathPoint;
   mapResolution: MapResolution;
   placeId: string;
+  offset: number;
 }
 
 interface InteractiveMapProps {
@@ -86,18 +87,14 @@ function BottomSheet({ route, placeId, pathId }: BottomSheetProps) {
   );
 }
 
-function PathPoint({ pathPoint, mapResolution, placeId }: PathPointProps) {
+function PathPoint({
+  pathPoint,
+  mapResolution,
+  offset,
+  placeId,
+}: PathPointProps) {
   // XXX: KeepScale 컴포넌트 쓸지 말지?
   // KeepScale 컴포넌트 사용 시 지도를 확대하거나 축소해도 핀의 크기는 변하지 않습니다.
-
-  // FIXME: fix hard-coded values
-  const href = (function () {
-    if (placeId === "2" && pathPoint.pathId === 3) {
-      return `/place/${placeId}/path/${pathPoint.pathId}/${pathPoint.id - 5}`;
-    }
-
-    return `/place/${placeId}/path/${pathPoint.pathId}/${pathPoint.id}`;
-  })();
 
   return (
     <KeepScale
@@ -108,7 +105,11 @@ function PathPoint({ pathPoint, mapResolution, placeId }: PathPointProps) {
       }}
       key={pathPoint.id}
     >
-      <a href={href}>
+      <a
+        href={`/place/${placeId}/path/${pathPoint.pathId}/${
+          pathPoint.id - offset
+        }`}
+      >
         <MapPin
           fill="currentColor"
           size={32}
@@ -141,6 +142,12 @@ function InteractiveMap({
     });
   };
 
+  // FIXME: remove this
+  const offset = Math.min.apply(
+    null,
+    pathPoints.map((pathPoint) => pathPoint.id)
+  );
+
   return (
     <TransformWrapper>
       <TransformComponent
@@ -167,6 +174,7 @@ function InteractiveMap({
               <PathPoint
                 key={pathPoint.id}
                 pathPoint={pathPoint}
+                offset={offset}
                 mapResolution={mapResolution}
                 placeId={placeId}
               />
