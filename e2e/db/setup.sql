@@ -38,7 +38,7 @@ CREATE TABLE path_point (
 
 -- place 쿼리:
 INSERT INTO place (id, name, description)
-       VALUES (1, E'고려대 박물관', E'서울 고려대학교 백주념기념관에 위치한 고려대학교 박물관은 한국 문화와 역사의 보고입니다. 이곳에서는 고대 유물부터 현대 예술까지 한국의 다채로운 역사를 만날 수 있습니다. 전시물들은 한국의 전통과 현대 사이의 아름다운 조화를 보여주며, 방문객들에게 교육적인 경험과 함께 문화적 통찰력을 제공합니다.');
+       VALUES (1, E'고려대_박물관', E'서울 고려대학교 백주념기념관에 위치한 고려대학교 박물관은 한국 문화와 역사의 보고입니다. 이곳에서는 고대 유물부터 현대 예술까지 한국의 다채로운 역사를 만날 수 있습니다. 전시물들은 한국의 전통과 현대 사이의 아름다운 조화를 보여주며, 방문객들에게 교육적인 경험과 함께 문화적 통찰력을 제공합니다.');
 
 -- artwork 쿼리:
 INSERT INTO art_work (id, name, summary, description, place_id)
@@ -52,7 +52,7 @@ INSERT INTO art_work (id, name, summary, description, place_id)
 -- path 관련 쿼리:
 -- pathID: 1 (파일: 추천루트01.xlsx)
 INSERT INTO path (id, place_id, name, description)
-       VALUES (1, 1, E'바쁘다 바빠 고대인!', E'- 2층 역사민족전시실 > 고미술전시실\n- 고미술전시실 출구 오른쪽 에스컬레이터를 타시면 3층 현대미술관이 나옵니다\n- 3층 현대미술전시실');
+       VALUES (1, 1, E'바쁘다 바빠 고대인!', E'바쁜 여러분들을 위한 고려대 박물관 속성 가이드!');
 INSERT INTO path_point (id, x, y, path_id)
        VALUES (0, 106, 199, 1),
               (1, 264, 361, 1),
@@ -63,7 +63,7 @@ INSERT INTO path_point (id, x, y, path_id)
 
 -- place 쿼리:
 INSERT INTO place (id, name, description)
-       VALUES (2, E'고려대 투어', E'고려대학교는 서울의 안암동에 자리 잡고 있으며, 역사와 현대성이 공존하는 아름다운 캠퍼스를 자랑합니다. 고전적인 한국 건축 양식과 현대적인 디자인이 조화롭게 어우러진 건물들이 특징입니다. 캠퍼스 곳곳에 펼쳐진 녹지와 조각상들은 고려대의 역사적 가치와 학문적 전통을 느낄 수 있는 공간을 만들어냅니다.');
+       VALUES (2, E'고려대_투어', E'고려대학교는 서울의 안암동에 자리 잡고 있으며, 역사와 현대성이 공존하는 아름다운 캠퍼스를 자랑합니다. 고전적인 한국 건축 양식과 현대적인 디자인이 조화롭게 어우러진 건물들이 특징입니다. 캠퍼스 곳곳에 펼쳐진 녹지와 조각상들은 고려대의 역사적 가치와 학문적 전통을 느낄 수 있는 공간을 만들어냅니다.');
 
 -- artwork 쿼리:
 INSERT INTO art_work (id, name, summary, description, place_id)
@@ -81,7 +81,7 @@ INSERT INTO art_work (id, name, summary, description, place_id)
 -- path 관련 쿼리:
 -- pathID: 2 (파일: 추천루트01.xlsx)
 INSERT INTO path (id, place_id, name, description)
-       VALUES (2, 2, E'고려대의 역사를 알아보자!', E'- 안암역 1번출구에 나오셔서 직진후 좌회전하시면 내리막길이 있습니다\n- 민주광장\n- 418기념관\n- 민주광장을 끼고 오르막길을 올라가면 됩니다\n- 문과대 서관\n- 중앙도서관');
+       VALUES (2, 2, E'고려대의 역사를 알아보자!', E'고려대의 착공부터 현재까지 고려대의 역사를 답사 해보고픈 여러분들을 위한 루트!');
 INSERT INTO path_point (id, x, y, path_id)
        VALUES (0, 886, 1706, 2),
               (1, 1190, 1783, 2),
@@ -90,7 +90,7 @@ INSERT INTO path_point (id, x, y, path_id)
               (4, 1508, 624, 2);
 -- pathID: 3 (파일: 추천루트02.xlsx)
 INSERT INTO path (id, place_id, name, description)
-       VALUES (3, 2, E'저녁공기와 함께하는 고려대 산책', E'- 고려대 1번출구로 나오셔서 큰길을 끼고 우회전합니다\n- 고려대 정문\n- 차도를 끼고 돌면 sk미래관 야외 복도가 나옵니다\n- sk미래관\n- 고려대 본관\n- 중앙도서관\n- 언덕을 오르다 보면 작은 철문이 하나 있습니다\n- 좌회전 후 길을 따라 걸으면 우측에 작은 철문이 하나 있습니다\n- 인촌기념관\n');
+       VALUES (3, 2, E'저녁공기와 함께하는 고려대 산책', E'밤의 불빛들과 함께하는 선선한 저녁 속에서 천천히 둘러보는 고려대의 전경');
 INSERT INTO path_point (id, x, y, path_id)
        VALUES (5, 1561, 1413, 3),
               (6, 1212, 1544, 3),
