@@ -20,12 +20,10 @@ function Step({ title, description, image, imageAlt, onNextClick }: StepProps) {
       </div>
       <div className="flex flex-col gap-3 p-6 pb-28 break-keep">
         <h1 className="font-bold text-2xl whitespace-pre-wrap">{title}</h1>
-        <p className="text-stone-500">
-          {
-            (!description.includes("\n")) ? description
-            : description.split("\n").map((v) => <div key={v}>{v}</div>)
-          }
-        </p>
+        {
+          (!description.includes("\n")) ? <p className="text-stone-500">{description}</p>
+          : description.split("\n").map((v) => <p className="text-stone-500" key={v}>{v}</p>)
+        }
       </div>
       <button
         onClick={onNextClick}
