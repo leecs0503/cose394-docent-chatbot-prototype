@@ -85,11 +85,13 @@ function AudioPlayer({ src, artworkName }: AudioPlayerProps) {
       });
 
       audioRef.current.addEventListener("timeupdate", () => {
-        const { currentTime, duration } = audioRef.current;
-        const progress = (currentTime / duration) * 100;
-
-        if (progressBarRef.current) {
-          progressBarRef.current.value = progress;
+        if (audioRef.current) {
+          const { currentTime, duration } = audioRef.current;
+          const progress = (currentTime / duration) * 100;
+  
+          if (progressBarRef.current) {
+            progressBarRef.current.value = progress;
+          }
         }
       });
     }
