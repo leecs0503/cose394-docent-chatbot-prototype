@@ -11,7 +11,7 @@ function PlaceInfo({ place }: PlaceInfoProps) {
       {/* FIXME: image src (public에 업로드하고 id로 받아오면 어떨까요) */}
       <img
         className="aspect-video bg-stone-300"
-        src={``}
+        src={`/images/place/${place.name}.jpg`}
         alt={`${place.name} 전경`}
       />
       <div className="flex flex-col gap-3 p-6 pb-24 break-keep">
