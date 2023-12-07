@@ -57,6 +57,8 @@ export default function End({
             <button
               data-umami-event="rating-submit"
               data-umami-event-rating={rating}
+              data-umami-event-rating-place-id={placeId}
+              data-umami-event-rating-path-id={pathId}
               onClick={handleSubmit}
               disabled={isSubmitted}
               className={[
