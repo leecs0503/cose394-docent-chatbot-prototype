@@ -79,13 +79,13 @@ function BottomSheet({ route, placeId, pathId }: BottomSheetProps) {
     pathTitle = "[바쁘다 바빠 고대인!] 루트";
   }
   if (pathId == "2") {
-    pathTitle = "[고려대의 역사를 알아보자!]루트"
+    pathTitle = "[고려대의 역사를 알아보자!]루트";
   }
   if (pathId == "3") {
-    pathTitle = "[저녁공기와 함께 고려대 산책]루트"
+    pathTitle = "[저녁공기와 함께 고려대 산책]루트";
   }
   if (pathId == "4") {
-    pathTitle = "[첫 루브르 관람을 위한 추천 가이드]루트"
+    pathTitle = "[첫 루브르 관람을 위한 추천 가이드]루트";
   }
 
   return (
@@ -221,7 +221,7 @@ export default function Path({
       "2층 역사민족전시실 → 고미술전시실",
       "고미술전시실 출구 오른쪽 에스컬레이터를 타시면 3층 현대미술관이 나옵니다.",
       "3층 현대미술전시실",
-    ]
+    ];
   }
   if (pathId == "2") {
     route = [
@@ -229,7 +229,7 @@ export default function Path({
       "민주광장 -> 418기념관",
       "민주광장을 끼고 오르막길을 올라가면 됩니다",
       "문과대 서관 -> 중앙도서관",
-    ]
+    ];
   }
   if (pathId == "3") {
     route = [
@@ -237,12 +237,12 @@ export default function Path({
       "sk미래관 -> 고려대 본관 -> 중앙도서관",
       "언덕을 위 작은 철문 -> 좌회전 후 직진 -> 우측에 작은 철문",
       "인촌기념관",
-    ]
+    ];
   }
   if (pathId == "4") {
     route = [
       "루브르 박물관에 오신 것을 환영합니다." // FIXME: 기획 받고 수정
-    ]
+    ];
   }
   const [info, setInfo] = useState({
     isLoading: true,
