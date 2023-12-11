@@ -73,10 +73,25 @@ function BreadCrumbs({ active, route }: BreadCrumbsProps) {
 }
 
 function BottomSheet({ route, placeId, pathId }: BottomSheetProps) {
+  // FIXME: 기한 내 MVP 테스트를 위해 하드코딩
+  let pathTitle: string = "";
+  if (pathId === "1") {
+    pathTitle = "[바쁘다 바빠 고대인!] 루트";
+  }
+  if (pathId == "2") {
+    pathTitle = "[고려대의 역사를 알아보자!]루트"
+  }
+  if (pathId == "3") {
+    pathTitle = "[저녁공기와 함께 고려대 산책]루트"
+  }
+  if (pathId == "4") {
+    pathTitle = "[첫 루브르 관람을 위한 추천 가이드]루트"
+  }
+
   return (
     <div className="bg-white rounded-t-xl shadow p-4 flex flex-col gap-4 absolute bottom-0 left-0 right-0">
       <div className="flex flex-col gap-4 p-2">
-        <h1 className="font-bold text-lg">[바쁘다 바빠 고대인!] 루트</h1>
+        <h1 className="font-bold text-lg">{pathTitle}</h1>
         <BreadCrumbs active={0} route={route} />
       </div>
       <a
@@ -199,11 +214,36 @@ export default function Path({
   params: { placeId: string; pathId: string };
 }) {
   // TODO: 루트 정보와 pathpoints 받아오기
-  const ROUTE = [
-    "2층 역사민족전시실 → 고미술전시실",
-    "고미술전시실 출구 오른쪽 에스컬레이터를 타시면 3층 현대미술관이 나옵니다.",
-    "3층 현대미술전시실",
-  ];
+  let route = [];
+  // FIXME: 기한 내 MVP 테스트를 위해 하드코딩
+  if (pathId == "1") {
+    route = [
+      "2층 역사민족전시실 → 고미술전시실",
+      "고미술전시실 출구 오른쪽 에스컬레이터를 타시면 3층 현대미술관이 나옵니다.",
+      "3층 현대미술전시실",
+    ]
+  }
+  if (pathId == "2") {
+    route = [
+      "안암역 1번출구에 나오셔서 직진후 좌회전하시면 내리막길이 있습니다",
+      "민주광장 -> 418기념관",
+      "민주광장을 끼고 오르막길을 올라가면 됩니다",
+      "문과대 서관 -> 중앙도서관",
+    ]
+  }
+  if (pathId == "3") {
+    route = [
+      "고려대 1번출구 -> 큰길을 끼고 우회전 -> 고려대 정문",
+      "sk미래관 -> 고려대 본관 -> 중앙도서관",
+      "언덕을 위 작은 철문 -> 좌회전 후 직진 -> 우측에 작은 철문",
+      "인촌기념관",
+    ]
+  }
+  if (pathId == "4") {
+    route = [
+      "루브르 박물관에 오신 것을 환영합니다." // FIXME: 기획 받고 수정
+    ]
+  }
   const [info, setInfo] = useState({
     isLoading: true,
     pathPoints: [],
@@ -244,7 +284,7 @@ export default function Path({
           placeId={placeId}
           backgroundColor={BACKGROUND_COLOR}
         />
-        <BottomSheet route={ROUTE} placeId={placeId} pathId={pathId} />
+        <BottomSheet route={route} placeId={placeId} pathId={pathId} />
       </div>
       <button
         onClick={onBackClick}
